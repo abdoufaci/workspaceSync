@@ -1,10 +1,21 @@
-import { UserButton } from "@clerk/nextjs";
-import { getTest } from "../lib/getTets";
+import {
+  SignInButton,
+  SignUpButton,
+  SignedIn,
+  SignedOut,
+  UserButton,
+} from "@clerk/nextjs";
 
 export default async function Home() {
   return (
-    <main className="">
-      <UserButton />
-    </main>
+    <div>
+      <SignedIn>
+        <UserButton afterSignOutUrl="/sign-in" />
+      </SignedIn>
+      <SignedOut>
+        <SignInButton />
+        <SignUpButton />
+      </SignedOut>
+    </div>
   );
 }

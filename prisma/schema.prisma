@@ -13,7 +13,13 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Test {
-  id   String @id @default(uuid())
-  text String
+model User {
+  id          String  @id @default(uuid())
+  username    String  @unique
+  imageUrl    String  @db.Text
+  clerkUserId String  @unique
+  bio         String? @db.Text
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
