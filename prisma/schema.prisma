@@ -15,10 +15,13 @@ datasource db {
 
 model User {
   id          String  @id @default(uuid())
-  username    String  @unique
-  imageUrl    String  @db.Text
-  clerkUserId String  @unique
+  clerkUserId String? @unique
+  activated   Boolean @default(false)
+  email       String  @unique
+  role        String
   bio         String? @db.Text
+  firstName   String?
+  lastName    String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
