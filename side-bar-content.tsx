@@ -1,0 +1,34 @@
+import {
+  LayoutGrid,
+  ListChecks,
+  MessageSquare,
+  Settings,
+  Users,
+} from "lucide-react";
+export const sidebarcontent = [
+  {
+    title: "Dashboard",
+    icon: <LayoutGrid className="h-4 w-4 " />,
+    label: "/",
+  },
+  {
+    title: "My Projects",
+    icon: <ListChecks className="h-4 w-4 " />,
+    label: "/projects",
+  },
+  {
+    title: "Messages",
+    icon: <MessageSquare className="h-4 w-4 " />,
+    label: "/messages",
+  },
+  {
+    title: "Members",
+    icon: <Users className="h-4 w-4 " />,
+    label: "/members",
+  },
+  {
+    title: "Settings",
+    icon: <Settings className="h-4 w-4 " />,
+    label: "/settings",
+  },
+];

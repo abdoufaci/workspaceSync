@@ -66,7 +66,7 @@ export default async function Home() {
   };
 
   return (
-    <div className="m-2">
+    <div className="m-2 pl-10">
       <div className="flex gap-x-4 items-center">
         <UserButton afterSignOutUrl="/sign-in" />
         <Link href="/onboarding">
@@ -89,8 +89,7 @@ export default async function Home() {
               {allowlistIdentifiers.map((allowListIdentifier) => (
                 <div
                   key={allowListIdentifier.id}
-                  className="flex gap-x-2 items-center py-2"
-                >
+                  className="flex gap-x-2 items-center py-2">
                   {allowListIdentifier.identifier}
 
                   {allowListIdentifier.identifier === email ? (
@@ -123,8 +122,7 @@ export default async function Home() {
                         );
 
                         revalidatePath("/");
-                      }}
-                    >
+                      }}>
                       <Button variant="destructive">Remove User</Button>
                     </form>
                   )}
@@ -136,8 +134,7 @@ export default async function Home() {
               {invitations.map((invitation) => (
                 <div
                   key={invitation.id}
-                  className="flex gap-x-2 items-center py-2"
-                >
+                  className="flex gap-x-2 items-center py-2">
                   {invitation.emailAddress}
                   {invitation.status === "accepted" ? (
                     <Badge className="bg-green-600 hover:bg-green-600">
