@@ -1,3 +1,4 @@
+import OpenModalButton from "@/components/OpenModalButton";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -72,6 +73,7 @@ export default async function Home() {
         <Link href="/onboarding">
           <Button>Edit Profile Infos</Button>
         </Link>
+        <OpenModalButton />
       </div>
       {user?.role === "manager" && (
         <div>
@@ -89,7 +91,8 @@ export default async function Home() {
               {allowlistIdentifiers.map((allowListIdentifier) => (
                 <div
                   key={allowListIdentifier.id}
-                  className="flex gap-x-2 items-center py-2">
+                  className="flex gap-x-2 items-center py-2"
+                >
                   {allowListIdentifier.identifier}
 
                   {allowListIdentifier.identifier === email ? (
@@ -122,7 +125,8 @@ export default async function Home() {
                         );
 
                         revalidatePath("/");
-                      }}>
+                      }}
+                    >
                       <Button variant="destructive">Remove User</Button>
                     </form>
                   )}
@@ -134,7 +138,8 @@ export default async function Home() {
               {invitations.map((invitation) => (
                 <div
                   key={invitation.id}
-                  className="flex gap-x-2 items-center py-2">
+                  className="flex gap-x-2 items-center py-2"
+                >
                   {invitation.emailAddress}
                   {invitation.status === "accepted" ? (
                     <Badge className="bg-green-600 hover:bg-green-600">
