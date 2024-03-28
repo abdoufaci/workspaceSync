@@ -1,10 +1,9 @@
 import { getCurrentUser } from "@/actions/queries/getCurrentUser";
+import OpenModalButton from "@/components/OpenModalButton";
+import UserCard from "@/components/UserCard";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { db } from "@/lib/db";
+import { Separator } from "@/components/ui/separator";
 import { clerkClient } from "@clerk/nextjs";
-import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 export default async function Home() {
@@ -18,127 +17,38 @@ export default async function Home() {
   const allowlistIdentifiers =
     await clerkClient.allowlistIdentifiers.getAllowlistIdentifierList();
 
-  const addEmployee = async (formData: any) => {
-    "use server";
-
-    const email = formData.get("email");
-
-    await db.user.create({
-      data: {
-        email: email,
-        role: "employee",
-      },
-    });
-
-    await clerkClient.allowlistIdentifiers.createAllowlistIdentifier({
-      identifier: email,
-      notify: true,
-    });
-
-    revalidatePath("/");
-  };
-
-  const addClient = async (formData: any) => {
-    "use server";
-
-    const email = formData.get("email");
-
-    await db.user.create({
-      data: {
-        email: email,
-        role: "client",
-      },
-    });
-
-    await clerkClient.allowlistIdentifiers.createAllowlistIdentifier({
-      identifier: email,
-      notify: true,
-    });
-
-    revalidatePath("/");
-  };
-
   return (
     <div className="m-2 pl-10">
-      {user?.role === "manager" && (
-        <div>
-          <form action={addEmployee} className="flex flex-col gap-y-2 py-2">
-            <Input name="email"></Input>
-            <Button className="w-32">invite employee</Button>
-          </form>
-          <form action={addClient} className="flex flex-col gap-y-2 py-2">
-            <Input name="email"></Input>
-            <Button className="w-32">invite client</Button>
-          </form>
-          <div className="flex justify-around">
-            <div className="flex flex-col items-center gap-y-2">
-              <h1 className="text-2xl font-bold">Allowed Users List</h1>
-              {allowlistIdentifiers.map((allowListIdentifier) => (
-                <div
-                  key={allowListIdentifier.id}
-                  className="flex gap-x-2 items-center py-2"
-                >
-                  {allowListIdentifier.identifier}
-
-                  {allowListIdentifier.identifier === user.email ? (
-                    <Badge className="p-2 bg-blue-700 hover:bg-blue-700 text-base">
-                      Manager
-                    </Badge>
-                  ) : (
-                    <form
-                      action={async () => {
-                        "use server";
-
-                        const user = await db.user.findFirst({
-                          where: {
-                            email: allowListIdentifier.identifier,
-                          },
-                        });
-
-                        if (user?.clerkUserId) {
-                          await clerkClient.users.deleteUser(user?.clerkUserId);
-                        }
-
-                        await db.user.delete({
-                          where: {
-                            email: allowListIdentifier.identifier,
-                          },
-                        });
-
-                        await clerkClient.allowlistIdentifiers.deleteAllowlistIdentifier(
-                          allowListIdentifier.id
-                        );
-
-                        revalidatePath("/");
-                      }}
-                    >
-                      <Button variant="destructive">Remove User</Button>
-                    </form>
-                  )}
-                </div>
-              ))}
-            </div>
-            <div className="flex flex-col items-center gap-y-2">
-              <h1 className="text-2xl font-bold">Invitations List</h1>
-              {invitations.map((invitation) => (
-                <div
-                  key={invitation.id}
-                  className="flex gap-x-2 items-center py-2"
-                >
-                  {invitation.emailAddress}
-                  {invitation.status === "accepted" ? (
-                    <Badge className="bg-green-600 hover:bg-green-600">
-                      Accepted
-                    </Badge>
-                  ) : (
-                    <Badge>Pending</Badge>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
+      <OpenModalButton modalName={"inviteUser"} />
+      <div className="flex justify-around">
+        <div className="flex flex-col items-center gap-y-2">
+          <h1 className="text-2xl font-bold">Allowed Users List</h1>
+          {allowlistIdentifiers.map((allowListIdentifier) => (
+            <UserCard
+              key={allowListIdentifier.id}
+              identifierId={allowListIdentifier.id}
+              identifier={allowListIdentifier.identifier}
+              email={user.email}
+            />
+          ))}
         </div>
-      )}
+        <Separator className="h-[400px]" orientation="vertical" />
+        <div className="flex flex-col items-center gap-y-2">
+          <h1 className="text-2xl font-bold">Invitations List</h1>
+          {invitations.map((invitation) => (
+            <div key={invitation.id} className="flex gap-x-2 items-center py-2">
+              {invitation.emailAddress}
+              {invitation.status === "accepted" ? (
+                <Badge className="bg-green-600 hover:bg-green-600">
+                  Accepted
+                </Badge>
+              ) : (
+                <Badge>Pending</Badge>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }

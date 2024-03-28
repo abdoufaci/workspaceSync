@@ -10,7 +10,7 @@ export default async function Topbar() {
       <Link href="/onboarding">
         <Button>Edit Profile Infos</Button>
       </Link>
-      <OpenModalButton />
+      <OpenModalButton modalName={"taskStatus"} />
       top-bar
     </div>
   );

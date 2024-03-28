@@ -1,4 +1,4 @@
-import { ProfileInfosForm } from "@/components/ProfileInfosForm";
+import { ProfileInfosForm } from "@/components/forms/ProfileInfosForm";
 import { db } from "@/lib/db";
 import { currentUser } from "@clerk/nextjs";
 

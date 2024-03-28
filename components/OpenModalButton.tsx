@@ -3,15 +3,15 @@
 import { useModal } from "@/hooks/use-modal-store";
 import { Button } from "./ui/button";
 
-export default function OpenModalButton() {
+export default function OpenModalButton({ modalName }: any) {
   const { onOpen } = useModal();
   return (
     <Button
       onClick={() => {
-        onOpen("taskStatus");
+        onOpen(modalName);
       }}
     >
-      OpenModalButton
+      {modalName} modal
     </Button>
   );
 }

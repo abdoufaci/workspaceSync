@@ -1,7 +1,7 @@
 //import { Channel, ChannelType, Server } from "@prisma/client";
 import { create } from "zustand";
 
-export type ModalType = "teamMembers" | "addTask" | "groupDetails" | "conversation" | "taskDetails" | "taskStatus" | "links" | "assignTo" | "addProject" | "editProject";
+export type ModalType = "teamMembers" | "addTask" | "groupDetails" | "conversation" | "taskDetails" | "taskStatus" | "links" | "assignTo" | "addProject" | "editProject" | "inviteUser";
 
 /*interface ModalData {
   server?: Server;

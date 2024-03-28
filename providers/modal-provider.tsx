@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 
 import { TaskStatusModal } from "@/components/modals/TaskStatusModal";
+import { InviteModal } from "@/components/modals/InviteModal";
 /*import { InviteModal } from "@/components/modals/invite-modal";
 import { CreateServerModal } from "@/components/modals/create-server-modal";
 import { MembersModal } from "@/components/modals/members-modal";
@@ -29,6 +30,7 @@ export const ModalProvider = () => {
   return (
     <>
       <TaskStatusModal />
+      <InviteModal />
     </>
   );
 };
