@@ -14,7 +14,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { updateUser } from "@/actions/user-actions/updateUser";
+import { updateUser } from "@/actions/mutations/user-actions/updateUser";
 import { useRouter } from "next/navigation";
 
 const formSchema = z.object({

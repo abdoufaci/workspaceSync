@@ -9,12 +9,12 @@ export const sidebarcontent = [
   {
     title: "Dashboard",
     icon: <LayoutGrid className="h-4 w-4 " />,
-    label: "/",
+    label: "/dashboard",
   },
   {
     title: "My Projects",
     icon: <ListChecks className="h-4 w-4 " />,
-    label: "/projects",
+    label: "/my-projects",
   },
   {
     title: "Messages",
