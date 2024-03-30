@@ -16,7 +16,7 @@ import { MessageFileModal } from "@/components/modals/message-file-modal";
 import { DeleteMessageModal } from "@/components/modals/delete-message-modal";*/
 
 export const ModalProvider = () => {
-  /*const [isMounted, setIsMounted] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
     setIsMounted(true);
@@ -24,7 +24,7 @@ export const ModalProvider = () => {
 
   if (!isMounted) {
     return null;
-  }*/
+  }
   // if a hydrations error happens uncomment this
 
   return (

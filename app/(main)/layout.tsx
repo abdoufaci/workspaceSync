@@ -7,7 +7,7 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
     <main className="h-full w-full flex">
       <ModalProvider />
       <SideBar />
-      <div className="w-full">
+      <div className="w-full h-full">
         <Topbar />
         {children}
       </div>

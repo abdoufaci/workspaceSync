@@ -16,7 +16,11 @@ async function Page() {
       {!user?.activated && (
         <p>fill your profile infos, to activate your account.</p>
       )}
-      <ProfileInfosForm user={user} clerkUserId={clerkUser?.id} />
+      <ProfileInfosForm
+        user={user}
+        clerkUserId={clerkUser?.id}
+        imageUrl={clerkUser?.imageUrl}
+      />
     </div>
   );
 }

@@ -25,88 +25,88 @@ import { inviteUser } from "@/actions/mutations/user-actions/inviteUser";
 import { useModal } from "@/hooks/use-modal-store";
 import { toast } from "sonner";
 import { useMutation } from "@tanstack/react-query";
+import { Role } from "@prisma/client";
 
-const formSchema = z.object({
+interface InviteFormProps {
+  role?: Role;
+}
+
+export const InviteUserformSchema = z.object({
   email: z
     .string()
     .min(1, { message: "This field has to be filled." })
     .email("This is not a valid email."),
-  userRole: z.string().min(1, {
-    message: "You need to choose a role.",
-  }),
+  role: z.enum([Role.CLIENT, Role.EMPLOYEE, Role.MANAGER]).optional(),
 });
 
-export function InviteForm() {
+export function InviteForm({ role }: InviteFormProps) {
   const { mutate: inviteUserMutation, isPending } = useMutation({
-    mutationFn: ({ email, userRole }: any) =>
+    mutationFn: ({ email, role }: z.infer<typeof InviteUserformSchema>) =>
       inviteUser({
         email,
-        userRole,
+        role,
       }),
-  });
-
-  const { onClose } = useModal();
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      email: "",
-      userRole: "",
+    onSuccess(data) {
+      console.log({ data });
+      toast.success("user invited successfully");
+    },
+    onError() {
+      toast.error("Something went wrong.");
+    },
+    onSettled() {
+      onClose();
     },
   });
 
-  async function onSubmit({ email, userRole }: z.infer<typeof formSchema>) {
-    try {
-      inviteUserMutation({
-        email,
-        userRole,
-      });
+  const { onClose } = useModal();
+  const form = useForm<z.infer<typeof InviteUserformSchema>>({
+    resolver: zodResolver(InviteUserformSchema),
+    defaultValues: {
+      email: "",
+    },
+  });
 
-      toast.success("user invited successfully");
-    } catch (e: any) {
-      toast.error(e.message);
-    } finally {
-      onClose();
-    }
+  async function onSubmit({
+    email,
+    role,
+  }: z.infer<typeof InviteUserformSchema>) {
+    inviteUserMutation({
+      email,
+      role,
+    });
   }
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form
+        onSubmit={form.handleSubmit((data) =>
+          onSubmit({
+            email: data.email,
+            role,
+          })
+        )}
+        className="space-y-8 flex flex-col justify-center items-center">
         <FormField
           control={form.control}
           name="email"
           render={({ field }) => (
-            <FormItem>
-              <FormLabel>Email</FormLabel>
+            <FormItem className="w-full">
+              <FormLabel className="text-gray-sub-300">Email</FormLabel>
               <FormControl>
-                <Input {...field} />
+                <Input
+                  {...field}
+                  className="border-gray-sub-300 focus-visible:ring-0"
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
-          name="userRole"
-          render={({ field }) => (
-            <FormItem className="w-[200px]">
-              <FormLabel>User Role</FormLabel>
-              <Select onValueChange={field.onChange}>
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select a Role" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  <SelectItem value="employee">Employee</SelectItem>
-                  <SelectItem value="client">Client</SelectItem>
-                </SelectContent>
-              </Select>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <Button disabled={isPending} type="submit">
+        <Button
+          disabled={isPending}
+          type="submit"
+          variant={"blue"}
+          className="text-white w-[115px]">
           Invite
         </Button>
       </form>

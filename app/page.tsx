@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { db } from "@/lib/db";
 import { SignInButton, SignUpButton, currentUser } from "@clerk/nextjs";
+import { Role } from "@prisma/client";
 import { redirect } from "next/navigation";
 
 export default async function Home() {

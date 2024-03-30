@@ -16,6 +16,13 @@ import {
 import { Input } from "@/components/ui/input";
 import { updateUser } from "@/actions/mutations/user-actions/updateUser";
 import { useRouter } from "next/navigation";
+import { User } from "@prisma/client";
+
+interface ProfileInfosFormProps {
+  user: User | null;
+  clerkUserId?: string;
+  imageUrl?: string;
+}
 
 const formSchema = z.object({
   firstName: z.string().min(2, {
@@ -26,7 +33,11 @@ const formSchema = z.object({
   }),
 });
 
-export function ProfileInfosForm({ user, clerkUserId }: any) {
+export function ProfileInfosForm({
+  user,
+  clerkUserId,
+  imageUrl,
+}: ProfileInfosFormProps) {
   const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -38,10 +49,11 @@ export function ProfileInfosForm({ user, clerkUserId }: any) {
 
   async function onSubmit({ firstName, lastName }: z.infer<typeof formSchema>) {
     await updateUser({
-      userId: user.id,
+      userId: user?.id,
       clerkUserId,
       firstName,
       lastName,
+      imageUrl,
     });
 
     router.push("/");

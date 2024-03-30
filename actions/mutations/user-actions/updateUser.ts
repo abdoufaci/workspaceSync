@@ -1,17 +1,32 @@
-'use server'
+"use server";
 
 import { db } from "@/lib/db";
 
-export const updateUser = async ({userId, clerkUserId, firstName, lastName}: any) => {
+interface updateUserProps {
+  userId?: string;
+  clerkUserId?: string;
+  firstName: string;
+  lastName: string;
+  imageUrl?: string;
+}
+
+export const updateUser = async ({
+  userId,
+  clerkUserId,
+  firstName,
+  lastName,
+  imageUrl,
+}: updateUserProps) => {
   await db.user.update({
     where: {
       id: userId,
     },
     data: {
-      clerkUserId: clerkUserId,
+      clerkUserId,
       firstName,
       lastName,
-      activated: true
+      activated: true,
+      imageUrl,
     },
-  })
+  });
 };

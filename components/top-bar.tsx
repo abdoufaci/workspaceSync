@@ -5,13 +5,13 @@ import OpenModalButton from "./OpenModalButton";
 
 export default async function Topbar() {
   return (
-    <div className="flex gap-x-4 items-center h-[80px] border-b flex-row-reverse pr-2">
+    <div className="flex gap-x-4 items-center h-[81px] border-b flex-row-reverse pr-10">
       <UserButton afterSignOutUrl="/" />
-      <Link href="/onboarding">
+      {/*<Link href="/onboarding">
         <Button>Edit Profile Infos</Button>
       </Link>
       <OpenModalButton modalName={"taskStatus"} />
-      top-bar
+  top-bar*/}
     </div>
   );
 }

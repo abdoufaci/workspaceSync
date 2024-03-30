@@ -13,15 +13,29 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Role {
+  MANAGER
+  CLIENT
+  EMPLOYEE
+}
+
+enum EmployeeRole {
+  MARKETER
+  DEVELOPER
+  UX_UI_DESIGNER
+}
+
 model User {
-  id          String  @id @default(uuid())
-  clerkUserId String? @unique
-  activated   Boolean @default(false)
-  email       String  @unique
-  role        String
-  bio         String? @db.Text
-  firstName   String?
-  lastName    String?
+  id           String        @id @default(uuid())
+  clerkUserId  String?       @unique
+  activated    Boolean       @default(false)
+  email        String        @unique
+  role         Role
+  employeeRole EmployeeRole?
+  bio          String?       @db.Text
+  firstName    String?
+  lastName     String?
+  imageUrl     String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
