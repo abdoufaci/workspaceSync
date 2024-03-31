@@ -4,11 +4,10 @@ import { cn } from "@/lib/utils";
 import { sidebarcontent } from "@/side-bar-content";
 import Image from "next/image";
 import Link from "next/link";
-import { useParams, usePathname, useSearchParams } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
 import React, { ElementRef, useEffect, useRef, useState } from "react";
 import { Separator } from "./ui/separator";
 import { Check, ChevronDown } from "lucide-react";
-import { Select, SelectContent, SelectTrigger } from "./ui/select";
 import { Popover, PopoverClose, PopoverTrigger } from "./ui/popover";
 import { PopoverContent } from "@radix-ui/react-popover";
 import { Button } from "./ui/button";
@@ -20,7 +19,7 @@ function SideBar() {
   const popoverCloseRef = useRef<ElementRef<"button">>(null);
 
   const pathname = usePathname();
-  const searchParams = useSearchParams();
+  const { memberType } = useParams();
 
   const [isMounted, setIsMounted] = useState(false);
 
@@ -84,7 +83,7 @@ function SideBar() {
                       className={cn(
                         "flex items-center py-3 text-secondary-1 w-fit px-3 transition-all duration-200 ease-out  ",
                         openSideBar ? "gap-x-3 px-10" : "justify-center",
-                        pathname === label
+                        pathname.includes(label)
                           ? "bg-gradient-to-r from-[#4f5bd5] justify-center to-[#b224ef] rounded-full text-white  bg-blend-color-burn"
                           : "",
                         popoverIsOpen && "mb-20"
@@ -101,7 +100,7 @@ function SideBar() {
                         <ChevronDown
                           className={cn(
                             "h-4 w-4",
-                            label === pathname
+                            pathname.includes(label)
                               ? "text-white"
                               : "text-secondary-1"
                           )}
@@ -117,27 +116,27 @@ function SideBar() {
                     side="bottom"
                     sideOffset={10}
                     className="shadow-md rounded p-1 ">
-                    <Link href={`${label}?client=true`}>
+                    <Link href={`${label}/client`}>
                       <Button
                         className={cn(
                           "w-full h-auto relative",
-                          searchParams.has("client") && "bg-gray-sub-100"
+                          memberType === "client" && "bg-gray-sub-100"
                         )}
                         variant={"ghost"}>
-                        {searchParams.has("client") && (
+                        {memberType === "client" && (
                           <Check className="h-4 w-4 absolute top-[50%] left-5 transform translate-y-[-50%]" />
                         )}
                         <h1>Client</h1>
                       </Button>
                     </Link>
-                    <Link href={`${label}?employee=true`}>
+                    <Link href={`${label}/employee`}>
                       <Button
                         className={cn(
                           "w-full h-auto relative",
-                          searchParams.has("employee") && "bg-gray-sub-100"
+                          memberType === "employee" && "bg-gray-sub-100"
                         )}
                         variant={"ghost"}>
-                        {searchParams.has("employee") && (
+                        {memberType === "employee" && (
                           <Check className="h-4 w-4 absolute top-[50%] left-5 transform translate-y-[-50%]" />
                         )}
                         <h1>Employee</h1>

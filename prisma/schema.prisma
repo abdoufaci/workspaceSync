@@ -36,6 +36,8 @@ model User {
   firstName    String?
   lastName     String?
   imageUrl     String?
+  adress       String?       @db.Text
+  username     String?       @unique
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

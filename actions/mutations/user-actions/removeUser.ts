@@ -1,29 +1,40 @@
-'use server'
+"use server";
 
 import { db } from "@/lib/db";
 import { clerkClient } from "@clerk/nextjs";
 import { revalidatePath } from "next/cache";
 
-export const removeUser = async ({ identifierId, identifier }: any) => {
-  const user = await db.user.findFirst({
-    where: {
-      email: identifier,
-    },
-  });
+interface removerUser {
+  identifierId?: string;
+  identifier?: string;
+  userId: string;
+  isClient: boolean;
+}
 
-  if (user?.clerkUserId) {
-    await clerkClient.users.deleteUser(user?.clerkUserId);
+export const removeUser = async ({
+  identifierId,
+  identifier,
+  userId,
+  isClient,
+}: removerUser) => {
+  try {
+    await clerkClient.allowlistIdentifiers.deleteAllowlistIdentifier(
+      identifierId || ""
+    );
+    await clerkClient.users.deleteUser(userId);
+  } catch (error) {
+    console.log(error);
   }
 
-  await db.user.delete({
+  const removerUser = await db.user.delete({
     where: {
       email: identifier,
     },
   });
 
-  await clerkClient.allowlistIdentifiers.deleteAllowlistIdentifier(
-    identifierId
-  );
+  isClient
+    ? revalidatePath("/members/client")
+    : revalidatePath("/members/employee");
 
-  revalidatePath("/");
+  return removerUser;
 };

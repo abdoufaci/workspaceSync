@@ -5,18 +5,20 @@ import { Role, User } from "@prisma/client";
 
 interface getEmployeesProps {
   pageParam?: string;
+  role?: Role;
 }
 
 const MEMBERS_BATCH = 1;
 
-export const getEmployees = async ({
+export const getMembers = async ({
   pageParam: cursor,
+  role,
 }: getEmployeesProps) => {
   let users: User[] = [];
   if (cursor) {
     users = await db.user.findMany({
       where: {
-        role: Role.EMPLOYEE,
+        role,
       },
       take: MEMBERS_BATCH,
       skip: 1,
@@ -30,7 +32,7 @@ export const getEmployees = async ({
   } else {
     users = await db.user.findMany({
       where: {
-        role: Role.EMPLOYEE,
+        role,
       },
       take: MEMBERS_BATCH,
       orderBy: {

@@ -1,5 +1,6 @@
 //import { Channel, ChannelType, Server } from "@prisma/client";
-import { Role } from "@prisma/client";
+import { Role, User } from "@prisma/client";
+import { SetStateAction } from "react";
 import { create } from "zustand";
 
 export type ModalType =
@@ -13,7 +14,8 @@ export type ModalType =
   | "assignTo"
   | "addProject"
   | "editProject"
-  | "inviteUser";
+  | "inviteUser"
+  | "removeUser";
 
 /*interface ModalData {
   server?: Server;
@@ -25,6 +27,8 @@ export type ModalType =
 
 interface ModalData {
   role?: Role;
+  user?: User;
+  identifierId?: string;
 }
 
 interface ModalStore {
@@ -33,12 +37,19 @@ interface ModalStore {
   isOpen: boolean;
   onOpen: (type: ModalType, data?: ModalData) => void;
   onClose: () => void;
+  isSelectedMemberOpen: boolean;
+  onOpenSelectedMember: (data?: ModalData) => void;
+  onCloseSelectedMember: () => void;
 }
 
 export const useModal = create<ModalStore>((set) => ({
   type: null,
   data: {},
   isOpen: false,
+  isSelectedMemberOpen: false,
   onOpen: (type, data = {}) => set({ isOpen: true, type, data }),
   onClose: () => set({ type: null, isOpen: false }),
+  onOpenSelectedMember: (data = {}) =>
+    set({ isSelectedMemberOpen: true, data }),
+  onCloseSelectedMember: () => set({ isSelectedMemberOpen: false }),
 }));
