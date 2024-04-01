@@ -56,12 +56,13 @@ enum Stat {
 }
 
 model Project {
-  id             String  @id @default(uuid())
+  id             String    @id @default(uuid())
   title          String
   description    String?
   projectDetails String?
-  timeline       String?
-  stat           Stat    @default(notStarted)
+  from           DateTime?
+  to             DateTime?
+  stat           Stat      @default(notStarted)
   imageUrl       String?
 
   teamLeaderId String

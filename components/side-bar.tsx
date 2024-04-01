@@ -42,12 +42,14 @@ function SideBar() {
       className={cn(
         "border-r overflow-x-hidden flex flex-col items-center transition-all duration-300 ease-out",
         openSideBar ? "!w-80" : "w-[90px] "
-      )}>
+      )}
+    >
       <div
         className={cn(
           "flex text-[#404040] border-b w-full  -space-x-5 transition-all duration-300 ease-out",
           openSideBar ? "items-center " : "items-center"
-        )}>
+        )}
+      >
         <Image
           alt="logo"
           src="/logo.svg"
@@ -59,7 +61,8 @@ function SideBar() {
           className={cn(
             "font-semibold transition-all duration-100 ease-out",
             openSideBar ? "text-xl" : "text-[0px]"
-          )}>
+          )}
+        >
           WorkSpaceSync
         </h1>
       </div>
@@ -69,9 +72,10 @@ function SideBar() {
           openSideBar
             ? "items-start justify-center"
             : "items-start justify-start"
-        )}>
+        )}
+      >
         {sidebarcontent.map(({ icon: Icon, title, label }) => (
-          <>
+          <div key={label}>
             {label === "/members" ? (
               <div className="z-50">
                 <Popover>
@@ -87,13 +91,15 @@ function SideBar() {
                           ? "bg-gradient-to-r from-[#4f5bd5] justify-center to-[#b224ef] rounded-full text-white  bg-blend-color-burn"
                           : "",
                         popoverIsOpen && "mb-20"
-                      )}>
+                      )}
+                    >
                       {Icon}
                       <h1
                         className={cn(
                           "whitespace-nowrap transition-all duration-100 ease-out",
                           openSideBar ? "text-base" : "text-[0px]"
-                        )}>
+                        )}
+                      >
                         {title}
                       </h1>
                       {openSideBar && (
@@ -115,14 +121,16 @@ function SideBar() {
                     align="center"
                     side="bottom"
                     sideOffset={10}
-                    className="shadow-md rounded p-1 ">
+                    className="shadow-md rounded p-1 "
+                  >
                     <Link href={`${label}/client`}>
                       <Button
                         className={cn(
                           "w-full h-auto relative",
                           memberType === "client" && "bg-gray-sub-100"
                         )}
-                        variant={"ghost"}>
+                        variant={"ghost"}
+                      >
                         {memberType === "client" && (
                           <Check className="h-4 w-4 absolute top-[50%] left-5 transform translate-y-[-50%]" />
                         )}
@@ -135,7 +143,8 @@ function SideBar() {
                           "w-full h-auto relative",
                           memberType === "employee" && "bg-gray-sub-100"
                         )}
-                        variant={"ghost"}>
+                        variant={"ghost"}
+                      >
                         {memberType === "employee" && (
                           <Check className="h-4 w-4 absolute top-[50%] left-5 transform translate-y-[-50%]" />
                         )}
@@ -155,13 +164,15 @@ function SideBar() {
                   pathname === label
                     ? "bg-gradient-to-r from-[#4f5bd5] justify-center to-[#b224ef] rounded-full text-white  bg-blend-color-burn"
                     : ""
-                )}>
+                )}
+              >
                 {Icon}
                 <h1
                   className={cn(
                     "whitespace-nowrap transition-all duration-100 ease-out",
                     openSideBar ? "text-base" : "text-[0px]"
-                  )}>
+                  )}
+                >
                   {title}
                 </h1>
                 {openSideBar && pathname === label && label === "/members" && (
@@ -169,7 +180,7 @@ function SideBar() {
                 )}
               </Link>
             )}
-          </>
+          </div>
         ))}
       </div>
       <Separator />
