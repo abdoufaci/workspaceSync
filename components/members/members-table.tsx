@@ -103,8 +103,7 @@ function MembersTable({ isClient, allowlistIdentifiers }: MembersTableProps) {
                     />
                     <h1>
                       {!user.activated && user.email}
-                      {user.activated && user.firstName}{" "}
-                      {user.activated && user.lastName}
+                      {user.activated && user?.username}
                     </h1>
                   </TableCell>
                   <TableCell className="font-medium text-center">

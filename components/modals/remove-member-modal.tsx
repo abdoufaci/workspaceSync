@@ -34,7 +34,7 @@ export const RemoveMemberModal = () => {
         isClient: user?.role === Role.CLIENT ? true : false,
       }),
     onSuccess(data) {
-      toast.success(`${data.firstName} ${data.lastName} removed successfully`);
+      toast.success(`${data.username} removed successfully`);
       onClose();
       router.refresh();
     },
@@ -58,9 +58,7 @@ export const RemoveMemberModal = () => {
           <DialogTitle className="text-xl text-center font-medium">
             <h1 className="text-lg">
               Are you sure to delete{" "}
-              <span className="text-primary-blue">
-                @{user?.firstName} {user?.lastName}
-              </span>
+              <span className="text-primary-blue">@{user?.username}</span>
             </h1>
           </DialogTitle>
         </DialogHeader>
