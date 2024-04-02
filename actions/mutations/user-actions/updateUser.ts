@@ -1,32 +1,24 @@
 "use server";
 
 import { db } from "@/lib/db";
+import { EmployeeRole } from "@prisma/client";
+import { z } from "zod";
 
 interface updateUserProps {
   userId?: string;
-  clerkUserId?: string;
-  firstName: string;
-  lastName: string;
-  imageUrl?: string;
+  role: EmployeeRole;
+  adress?: string;
 }
 
-export const updateUser = async ({
-  userId,
-  clerkUserId,
-  firstName,
-  lastName,
-  imageUrl,
-}: updateUserProps) => {
+export const updateUser = async ({ userId, adress, role }: updateUserProps) => {
   await db.user.update({
     where: {
       id: userId,
     },
     data: {
-      clerkUserId,
-      firstName,
-      lastName,
       activated: true,
-      imageUrl,
+      employeeRole: role,
+      adress,
     },
   });
 };

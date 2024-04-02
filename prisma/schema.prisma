@@ -38,6 +38,7 @@ model User {
   imageUrl     String?
   adress       String?       @db.Text
   username     String?       @unique
+  phoneNumber  String?       @db.Text
 
   leaderOfProjects Project[] @relation("teamLeader")
 

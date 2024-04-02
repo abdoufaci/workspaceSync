@@ -44,7 +44,7 @@ export const MemberDetail = () => {
           <div className="space-y-1">
             <h1 className="font-semibold text-center">{user?.username} </h1>
             <h1 className="text-[#757575] text-sm text-center">
-              Designer maskin
+              {user?.employeeRole}
             </h1>
           </div>
         </div>
@@ -52,7 +52,7 @@ export const MemberDetail = () => {
         <div className="space-y-5 p-5">
           <div className="flex items-center space-x-3">
             <span className="text-[#576070]">Phone : </span>
-            <h1>+2131325132288</h1>
+            <h1>{user?.phoneNumber}</h1>
           </div>
           <div className="flex items-center space-x-3">
             <span className="text-[#576070]">Email : </span>
@@ -60,7 +60,7 @@ export const MemberDetail = () => {
           </div>
           <div className="flex items-center space-x-3">
             <span className="text-[#576070]">Address : </span>
-            <h1>Beni mared, Blida</h1>
+            <h1>{user?.adress}</h1>
           </div>
           <div className="flex items-center space-x-3">
             <span className="text-[#576070]">Stat : </span>

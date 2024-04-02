@@ -16,79 +16,122 @@ import {
 import { Input } from "@/components/ui/input";
 import { updateUser } from "@/actions/mutations/user-actions/updateUser";
 import { useRouter } from "next/navigation";
-import { User } from "@prisma/client";
+import { EmployeeRole, User } from "@prisma/client";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
+import { useMutation } from "@tanstack/react-query";
+import { toast } from "sonner";
 
 interface ProfileInfosFormProps {
   user: User | null;
-  clerkUserId?: string;
-  imageUrl?: string;
 }
 
 const formSchema = z.object({
-  firstName: z.string().min(2, {
+  adress: z.string().min(2, {
     message: "firstName must be at least 2 characters.",
   }),
-  lastName: z.string().min(2, {
-    message: "lastName must be at least 2 characters.",
-  }),
+  role: z.enum([
+    EmployeeRole.DEVELOPER,
+    EmployeeRole.MARKETER,
+    EmployeeRole.UX_UI_DESIGNER,
+  ]),
 });
 
-export function ProfileInfosForm({
-  user,
-  clerkUserId,
-  imageUrl,
-}: ProfileInfosFormProps) {
+export function ProfileInfosForm({ user }: ProfileInfosFormProps) {
   const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      firstName: "",
-      lastName: "",
+      adress: "",
+      role: EmployeeRole.UX_UI_DESIGNER,
     },
   });
 
-  async function onSubmit({ firstName, lastName }: z.infer<typeof formSchema>) {
-    await updateUser({
-      userId: user?.id,
-      clerkUserId,
-      firstName,
-      lastName,
-      imageUrl,
-    });
+  const { mutate: updateUserMutation, isPending } = useMutation({
+    mutationFn: async ({ adress, role }: z.infer<typeof formSchema>) =>
+      await updateUser({
+        userId: user?.id,
+        role,
+        adress,
+      }),
 
-    router.push("/");
+    onSuccess() {
+      router.push("/");
+    },
+    onError() {
+      toast.error("Something went wrong.");
+    },
+  });
+
+  async function onSubmit({ adress, role }: z.infer<typeof formSchema>) {
+    updateUserMutation({
+      adress,
+      role,
+    });
   }
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <FormField
-          control={form.control}
-          name="firstName"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>First Name</FormLabel>
-              <FormControl>
-                <Input {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="lastName"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Last Name</FormLabel>
-              <FormControl>
-                <Input {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <Button type="submit">Submit</Button>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-14">
+        <div className="space-y-8">
+          <FormField
+            control={form.control}
+            name="adress"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Adress</FormLabel>
+                <FormControl>
+                  <Input className="focus-visible:ring-0" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="role"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Role</FormLabel>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}>
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select a Role" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem value={EmployeeRole.DEVELOPER}>
+                      {EmployeeRole.DEVELOPER}
+                    </SelectItem>
+                    <SelectItem value="apple">
+                      {EmployeeRole.MARKETER}
+                    </SelectItem>
+                    <SelectItem value={EmployeeRole.UX_UI_DESIGNER}>
+                      {EmployeeRole.UX_UI_DESIGNER}
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+
+        <Button
+          disabled={isPending}
+          type="submit"
+          className="w-[90%] mx-auto absolute bottom-7 left-[50%] transform translate-x-[-50%] bg-primary-blue/95 hover:bg-primary-blue text-white">
+          Submit
+        </Button>
       </form>
     </Form>
   );

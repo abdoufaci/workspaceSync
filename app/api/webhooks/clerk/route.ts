@@ -65,6 +65,7 @@ export async function POST(req: Request) {
         );
       }
     }*/
+
     await db.user.update({
       where: {
         email: payload.data.email_addresses[0].email_address,
@@ -74,8 +75,8 @@ export async function POST(req: Request) {
         imageUrl: payload.data.image_url,
         firstName: payload.data.first_name,
         lastName: payload.data.last_name,
-        activated: true,
         clerkUserId: payload.data.id,
+        phoneNumber: payload.data.phone_numbers[0].phone_number,
       },
     });
   }
@@ -90,6 +91,7 @@ export async function POST(req: Request) {
         imageUrl: payload.data.image_url,
         firstName: payload.data.first_name,
         lastName: payload.data.last_name,
+        phoneNumber: payload.data.phone_numbers[0].phone_number,
       },
     });
   }

@@ -15,7 +15,8 @@ export type ModalType =
   | "addProject"
   | "editProject"
   | "inviteUser"
-  | "removeUser";
+  | "removeUser"
+  | "editUser";
 
 /*interface ModalData {
   server?: Server;

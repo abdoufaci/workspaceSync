@@ -110,7 +110,9 @@ function MembersTable({ isClient, allowlistIdentifiers }: MembersTableProps) {
                     {user.activated && user.email}
                     {!user.activated && "-"}
                   </TableCell>
-                  <TableCell>{user.activated ? "0659174587" : "-"} </TableCell>
+                  <TableCell>
+                    {user.activated ? user.phoneNumber : "-"}{" "}
+                  </TableCell>
                   <TableCell>
                     {user.activated ? user.createdAt.toLocaleDateString() : "-"}
                   </TableCell>
@@ -125,7 +127,6 @@ function MembersTable({ isClient, allowlistIdentifiers }: MembersTableProps) {
                   </TableCell>
                   <TableCell className="text-right flex justify-end gap-5 transform translate-y-[-25%]">
                     <Trash
-                      type="submit"
                       onClick={(e: React.MouseEvent) => {
                         e.stopPropagation();
                         onOpen("removeUser", {
@@ -137,7 +138,16 @@ function MembersTable({ isClient, allowlistIdentifiers }: MembersTableProps) {
                       role="button"
                     />
 
-                    <Edit className="h-4 w-4" role="button" />
+                    <Edit
+                      onClick={(e: React.MouseEvent) => {
+                        e.stopPropagation();
+                        onOpen("editUser", {
+                          user,
+                        });
+                      }}
+                      className="h-4 w-4"
+                      role="button"
+                    />
                   </TableCell>
                 </TableRow>
               );
