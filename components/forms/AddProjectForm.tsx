@@ -121,10 +121,7 @@ export function AddProjectForm() {
             <FormItem className="w-full">
               <FormLabel className="text-gray-sub-300">Title</FormLabel>
               <FormControl>
-                <Input
-                  {...field}
-                  className="border-gray-sub-300 focus-visible:ring-0"
-                />
+                <Input {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -331,26 +328,56 @@ export function AddProjectForm() {
           control={form.control}
           name="stat"
           render={({ field }) => (
-            <FormItem className="w-full">
+            <FormItem className="flex items-center gap-x-2 w-full">
               <FormLabel className="text-gray-sub-300">Stat :</FormLabel>
               <FormControl>
                 <RadioGroup onValueChange={field.onChange} className="flex">
-                  <div className="flex items-center space-x-2 p-2">
-                    <RadioGroupItem value="notStarted" id="r1" />
+                  <div
+                    className={`flex items-center rounded-full border ${
+                      field.value === "notStarted" && "border-black"
+                    }`}
+                  >
+                    <RadioGroupItem
+                      value="notStarted"
+                      id="r1"
+                      className="hidden"
+                    />
                     <Label htmlFor="r1">
-                      <Badge>Not Started</Badge>
+                      <Badge variant="notStarted" className="rounded-full">
+                        Not Started
+                      </Badge>
                     </Label>
                   </div>
-                  <div className="flex items-center space-x-2 p-2">
-                    <RadioGroupItem value="inProgress" id="r2" />
+                  <div
+                    className={`flex items-center rounded-full border ${
+                      field.value === "inProgress" && "border-black"
+                    }`}
+                  >
+                    <RadioGroupItem
+                      value="inProgress"
+                      id="r2"
+                      className="hidden"
+                    />
                     <Label htmlFor="r2">
-                      <Badge>In Progress</Badge>
+                      <Badge variant="pending" className="rounded-full">
+                        In Progress
+                      </Badge>
                     </Label>
                   </div>
-                  <div className="flex items-center space-x-2 p-2">
-                    <RadioGroupItem value="completed" id="r3" />
+                  <div
+                    className={`flex items-center rounded-full border ${
+                      field.value === "completed" && "border-black"
+                    }`}
+                  >
+                    <RadioGroupItem
+                      value="completed"
+                      id="r3"
+                      className="hidden"
+                    />
                     <Label htmlFor="r3">
-                      <Badge>Completed</Badge>
+                      <Badge variant="completed" className="rounded-full">
+                        Completed
+                      </Badge>
                     </Label>
                   </div>
                 </RadioGroup>
@@ -366,8 +393,8 @@ export function AddProjectForm() {
             <FormItem className="w-full">
               <FormLabel className="text-gray-sub-300">Steps :</FormLabel>
               {field.value.map((step: Step) => (
-                <div key={step.title} className="flex items-center gap-x-2">
-                  <div className="flex p-2 border rounded-lg w-[150px]  items-center justify-between">
+                <div key={step.title} className="flex items-center gap-x-3">
+                  <div className="flex p-2 border rounded-lg w-[160px] items-center justify-between">
                     <label
                       htmlFor={step.title}
                       className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
@@ -398,7 +425,7 @@ export function AddProjectForm() {
                         )
                       )
                     }
-                    className="h-4 w-4"
+                    className="h-5 w-5 p-[3px] outline-dashed outline-2 text-red-500 bg-red-300 rounded-full"
                     role="button"
                   />
                 </div>
@@ -408,7 +435,7 @@ export function AddProjectForm() {
                   placeholder="Step Name"
                   value={value}
                   onChange={(e) => setValue(e.target.value)}
-                  className="w-[150px]"
+                  className="w-[160px]"
                 ></Input>
                 <CircleFadingPlus
                   role="button"
@@ -417,7 +444,7 @@ export function AddProjectForm() {
                   style={{
                     backgroundColor: "#E7F1F8",
                   }}
-                  className="rounded-full"
+                  className="rounded-full ml-[1px]"
                   onClick={() => {
                     field.onChange([
                       ...field.value,
@@ -453,7 +480,7 @@ export function AddProjectForm() {
           disabled={isPending}
           type="submit"
           variant={"blue"}
-          className="text-white w-[115px]"
+          className="text-white w-full py-6 rounded-lg"
         >
           Add Project
         </Button>
