@@ -1,5 +1,11 @@
 "use client";
 
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -32,6 +38,7 @@ import { AssignTo } from "@/app/(main)/my-projects/components/AssignTo";
 import { TeamLeader } from "@/app/(main)/my-projects/components/TeamLeader";
 import { Client } from "@/app/(main)/my-projects/components/Client";
 import { addProject } from "@/actions/mutations/project-actions/addProject";
+import { FileUpload } from "../FileUpload";
 
 export const AddProjectFormSchema = z.object({
   image: z.string().optional(),
@@ -106,9 +113,11 @@ export function AddProjectForm() {
           name="image"
           render={({ field }) => (
             <FormItem className="w-full">
-              <FormLabel className="text-gray-sub-300">Image</FormLabel>
+              <FormLabel className="text-gray-sub-300">Project Image</FormLabel>
               <FormControl>
-                <p>UploadThing needed</p>
+                <div>
+                  <FileUpload value={field.value} onChange={field.onChange} />
+                </div>
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -334,7 +343,7 @@ export function AddProjectForm() {
                 <RadioGroup onValueChange={field.onChange} className="flex">
                   <div
                     className={`flex items-center rounded-full border ${
-                      field.value === "notStarted" && "border-black"
+                      field.value === "notStarted" && "border-[#00000088]"
                     }`}
                   >
                     <RadioGroupItem
@@ -350,7 +359,7 @@ export function AddProjectForm() {
                   </div>
                   <div
                     className={`flex items-center rounded-full border ${
-                      field.value === "inProgress" && "border-black"
+                      field.value === "inProgress" && "border-[#00000088]"
                     }`}
                   >
                     <RadioGroupItem
@@ -366,7 +375,7 @@ export function AddProjectForm() {
                   </div>
                   <div
                     className={`flex items-center rounded-full border ${
-                      field.value === "completed" && "border-black"
+                      field.value === "completed" && "border-[#00000088]"
                     }`}
                   >
                     <RadioGroupItem
@@ -402,7 +411,7 @@ export function AddProjectForm() {
                       {step.title}
                     </label>
                     <Checkbox
-                      className="rounded-full"
+                      className="w-6 h-6 rounded-full flex justify-center items-center"
                       id={step.title}
                       checked={step.completed}
                       onClick={() => {
