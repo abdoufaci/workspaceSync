@@ -19,6 +19,7 @@ import { useModal } from "@/hooks/use-modal-store";
 import { Badge } from "../ui/badge";
 import { useSearchParams } from "next/navigation";
 import { User } from "@prisma/client";
+import MemberStatus from "./member-status";
 
 interface MembersTableProps {
   isClient: boolean;
@@ -81,7 +82,7 @@ function MembersTable({ isClient, allowlistIdentifiers }: MembersTableProps) {
         </TableHeader>
         <TableBody>
           {users?.pages?.map((page) =>
-            page.users
+            page?.users
               .filter((user) =>
                 triggeredMonth
                   ? user.createdAt.getMonth() === Number(triggeredMonth) - 1
@@ -132,10 +133,10 @@ function MembersTable({ isClient, allowlistIdentifiers }: MembersTableProps) {
                       {user.activated ? "projects" : "-"}
                     </TableCell>
                     <TableCell className="text-right">
-                      <Badge
-                        variant={`${user.activated ? "working" : "pending"}`}>
-                        {user.activated ? "Working" : "Pending"}
-                      </Badge>
+                      <MemberStatus
+                        projects={user.projects}
+                        isActivated={user.activated}
+                      />
                     </TableCell>
                     <TableCell className="text-right flex justify-end gap-5 transform translate-y-[-25%]">
                       <Trash

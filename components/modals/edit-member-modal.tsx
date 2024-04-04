@@ -40,6 +40,7 @@ import { inviteUser } from "@/actions/mutations/user-actions/inviteUser";
 import { toast } from "sonner";
 import { updateUser } from "@/actions/mutations/user-actions/updateUser";
 import { useMembersQuery } from "@/hooks/use-query-members";
+import MemberStatus from "../members/member-status";
 
 const formSchema = z.object({
   fullName: z
@@ -73,7 +74,6 @@ export const EditMemberModal = () => {
   const { isOpen, onClose, type, data } = useModal();
 
   const { user } = data;
-  const [state, setState] = useState(user?.activated ? "working" : "paused");
 
   const isModalOpen = isOpen && data && type === "editUser";
 
@@ -82,10 +82,6 @@ export const EditMemberModal = () => {
   });
 
   const { refetch } = useMembersQuery(user?.role === "CLIENT");
-
-  useEffect(() => {
-    setState(user?.activated ? "working" : "paused");
-  }, [user]);
 
   const { mutate: updateUserMutation, isPending } = useMutation({
     mutationFn: ({
@@ -232,22 +228,10 @@ export const EditMemberModal = () => {
               />
               <div className="flex items-center gap-x-3">
                 <h1 className="text-gray-sub-300">State:</h1>
-                <div className="flex items-center gap-x-3">
-                  <Badge
-                    role="button"
-                    onClick={() => setState("working")}
-                    variant={state === "working" ? "workingState" : "working"}
-                    className="rounded-full font-normal">
-                    Working
-                  </Badge>
-                  <Badge
-                    role="button"
-                    onClick={() => setState("paused")}
-                    variant={state === "paused" ? "pausedState" : "paused"}
-                    className="rounded-full font-normal">
-                    Paused
-                  </Badge>
-                </div>
+                <MemberStatus
+                  isActivated={user?.activated}
+                  projects={user?.projects}
+                />
               </div>
               <FormField
                 control={form.control}

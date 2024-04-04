@@ -1,7 +1,7 @@
 "use server";
 
 import { db } from "@/lib/db";
-import { Role, User } from "@prisma/client";
+import { Project, Role, User } from "@prisma/client";
 
 interface getEmployeesProps {
   pageParam?: string;
@@ -14,7 +14,9 @@ export const getMembers = async ({
   pageParam: cursor,
   role,
 }: getEmployeesProps) => {
-  let users: User[] = [];
+  let users: (User & {
+    projects: Project[];
+  })[] = [];
   if (cursor) {
     users = await db.user.findMany({
       where: {
@@ -28,6 +30,9 @@ export const getMembers = async ({
       orderBy: {
         createdAt: "desc",
       },
+      include: {
+        projects: true,
+      },
     });
   } else {
     users = await db.user.findMany({
@@ -37,6 +42,9 @@ export const getMembers = async ({
       take: MEMBERS_BATCH,
       orderBy: {
         createdAt: "desc",
+      },
+      include: {
+        projects: true,
       },
     });
   }

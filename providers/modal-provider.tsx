@@ -7,6 +7,7 @@ import { InviteModal } from "@/components/modals/InviteModal";
 import { RemoveMemberModal } from "@/components/modals/remove-member-modal";
 import { AddProject } from "@/components/modals/AddProject";
 import { EditMemberModal } from "@/components/modals/edit-member-modal";
+import { AddTask } from "@/components/modals/add-task";
 /*import { InviteModal } from "@/components/modals/invite-modal";
 import { CreateServerModal } from "@/components/modals/create-server-modal";
 import { MembersModal } from "@/components/modals/members-modal";
@@ -37,6 +38,7 @@ export const ModalProvider = () => {
       <RemoveMemberModal />
       <AddProject />
       <EditMemberModal />
+      <AddTask />
     </>
   );
 };

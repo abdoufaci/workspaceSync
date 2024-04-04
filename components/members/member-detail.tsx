@@ -8,9 +8,11 @@ import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
 import { X } from "lucide-react";
 import { cn } from "@/lib/utils";
+import MemberStatus from "./member-status";
 
 export const MemberDetail = () => {
-  const { isSelectedMemberOpen, data, onCloseSelectedMember } = useModal();
+  const { isSelectedMemberOpen, data, onCloseSelectedMember, onOpen } =
+    useModal();
 
   const { user } = data;
 
@@ -64,9 +66,10 @@ export const MemberDetail = () => {
           </div>
           <div className="flex items-center space-x-3">
             <span className="text-[#576070]">Stat : </span>
-            <Badge variant={`${user?.activated ? "working" : "pending"}`}>
-              {user?.activated ? "Working" : "Pending"}
-            </Badge>
+            <MemberStatus
+              isActivated={user?.activated}
+              projects={user?.projects}
+            />
           </div>
         </div>
         <Separator className="w-[90%] mx-auto" />
@@ -76,7 +79,13 @@ export const MemberDetail = () => {
             {user?.bio || "A veryyyyyyyy good guy"}
           </p>
         </div>
-        <Button className="w-[90%] mx-auto bg-primary-blue/95 hover:bg-primary-blue m-5">
+        <Button
+          onClick={() =>
+            onOpen("editUser", {
+              user,
+            })
+          }
+          className="w-[90%] mx-auto bg-primary-blue/95 hover:bg-primary-blue m-5">
           Edit
         </Button>
       </ScrollArea>
