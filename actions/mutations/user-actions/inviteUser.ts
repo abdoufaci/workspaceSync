@@ -29,5 +29,5 @@ export const inviteUser = async ({
     notify: true,
   });
 
-  revalidatePath("/");
+  revalidatePath("/members/[memberType]", "page");
 };

@@ -32,9 +32,7 @@ export const removeUser = async ({
     },
   });
 
-  isClient
-    ? revalidatePath("/members/client")
-    : revalidatePath("/members/employee");
+  revalidatePath("/members/[memberType]", "page");
 
   return removerUser;
 };

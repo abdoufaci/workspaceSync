@@ -15,6 +15,7 @@ import { removeUser } from "@/actions/mutations/user-actions/removeUser";
 import { toast } from "sonner";
 import { redirect, useRouter } from "next/navigation";
 import { Role } from "@prisma/client";
+import { useMembersQuery } from "@/hooks/use-query-members";
 
 export const RemoveMemberModal = () => {
   const { isOpen, onClose, type, data } = useModal();
@@ -24,6 +25,8 @@ export const RemoveMemberModal = () => {
   const router = useRouter();
 
   const { user, identifierId } = data;
+
+  const { refetch } = useMembersQuery(user?.role === "CLIENT");
 
   const { mutate: removeUserMutation, isPending } = useMutation({
     mutationFn: () =>
@@ -35,11 +38,13 @@ export const RemoveMemberModal = () => {
       }),
     onSuccess(data) {
       toast.success(`${data.username} removed successfully`);
-      onClose();
       router.refresh();
     },
     onError() {
       toast.error("Something went wrong");
+    },
+    onSettled() {
+      refetch();
       onClose();
     },
   });

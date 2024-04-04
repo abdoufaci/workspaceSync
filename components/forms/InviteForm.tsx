@@ -26,6 +26,7 @@ import { useModal } from "@/hooks/use-modal-store";
 import { toast } from "sonner";
 import { useMutation } from "@tanstack/react-query";
 import { Role } from "@prisma/client";
+import { useMembersQuery } from "@/hooks/use-query-members";
 
 interface InviteFormProps {
   role?: Role;
@@ -40,6 +41,8 @@ export const InviteUserformSchema = z.object({
 });
 
 export function InviteForm({ role }: InviteFormProps) {
+  const { refetch } = useMembersQuery(role === "CLIENT");
+
   const { mutate: inviteUserMutation, isPending } = useMutation({
     mutationFn: ({ email, role }: z.infer<typeof InviteUserformSchema>) =>
       inviteUser({
@@ -54,6 +57,7 @@ export function InviteForm({ role }: InviteFormProps) {
       toast.error("Something went wrong.");
     },
     onSettled() {
+      refetch();
       onClose();
     },
   });

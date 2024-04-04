@@ -17,6 +17,8 @@ import { Skeleton } from "../ui/skeleton";
 import { ScrollArea } from "../ui/scroll-area";
 import { useModal } from "@/hooks/use-modal-store";
 import { Badge } from "../ui/badge";
+import { useSearchParams } from "next/navigation";
+import { User } from "@prisma/client";
 
 interface MembersTableProps {
   isClient: boolean;
@@ -36,6 +38,10 @@ function MembersTable({ isClient, allowlistIdentifiers }: MembersTableProps) {
     isLoadingError,
   } = useMembersQuery(isClient);
 
+  const searchParams = useSearchParams();
+
+  const triggeredMonth = searchParams.get("month");
+
   const [isMounted, setIsMounted] = useState(false);
 
   const { onOpen, onOpenSelectedMember } = useModal();
@@ -47,7 +53,6 @@ function MembersTable({ isClient, allowlistIdentifiers }: MembersTableProps) {
   if (!isMounted) {
     return null;
   }
-
   return (
     <ScrollArea className="w-full h-[92%]">
       <Table>
@@ -76,82 +81,89 @@ function MembersTable({ isClient, allowlistIdentifiers }: MembersTableProps) {
         </TableHeader>
         <TableBody>
           {users?.pages?.map((page) =>
-            page.users.map((user) => {
-              let identifierId: string;
-              if (allowlistIdentifiers) {
-                identifierId = allowlistIdentifiers.filter(
-                  (allow) => allow.identifier === user.email
-                )[0]?.id;
-              }
+            page.users
+              .filter((user) =>
+                triggeredMonth
+                  ? user.createdAt.getMonth() === Number(triggeredMonth) - 1
+                  : user
+              )
+              .map((user) => {
+                let identifierId: string;
+                if (allowlistIdentifiers) {
+                  identifierId = allowlistIdentifiers.filter(
+                    (allow) => allow.identifier === user.email
+                  )[0]?.id;
+                }
+                return (
+                  <TableRow
+                    onClick={() =>
+                      onOpenSelectedMember({
+                        user,
+                      })
+                    }
+                    key={user.email}
+                    className="text-[#757575] cursor-pointer">
+                    <TableCell className="text-black font-semibold flex items-center space-x-2">
+                      <Image
+                        alt="avatar"
+                        src={user.imageUrl || "/avatar.png"}
+                        height={100}
+                        width={100}
+                        className="h-10 w-10 rounded-full object-cover"
+                      />
+                      <h1>
+                        {!user.activated && user.email}
+                        {user.activated && user?.username}
+                      </h1>
+                    </TableCell>
+                    <TableCell className="font-medium text-center">
+                      {user.activated && user.email}
+                      {!user.activated && "-"}
+                    </TableCell>
+                    <TableCell>
+                      {user.activated ? user.phoneNumber : "-"}{" "}
+                    </TableCell>
+                    <TableCell>
+                      {user.activated
+                        ? user.createdAt.toLocaleDateString()
+                        : "-"}
+                    </TableCell>
+                    <TableCell className="text-right">
+                      {user.activated ? "projects" : "-"}
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <Badge
+                        variant={`${user.activated ? "working" : "pending"}`}>
+                        {user.activated ? "Working" : "Pending"}
+                      </Badge>
+                    </TableCell>
+                    <TableCell className="text-right flex justify-end gap-5 transform translate-y-[-25%]">
+                      <Trash
+                        onClick={(e: React.MouseEvent) => {
+                          e.stopPropagation();
+                          onOpen("removeUser", {
+                            user,
+                            identifierId,
+                          });
+                        }}
+                        className="h-4 w-4"
+                        role="button"
+                      />
 
-              return (
-                <TableRow
-                  onClick={() =>
-                    onOpenSelectedMember({
-                      user,
-                    })
-                  }
-                  key={user.email}
-                  className="text-[#757575] cursor-pointer">
-                  <TableCell className="text-black font-semibold flex items-center space-x-2">
-                    <Image
-                      alt="avatar"
-                      src={user.imageUrl || "/avatar.png"}
-                      height={100}
-                      width={100}
-                      className="h-10 w-10 rounded-full object-cover"
-                    />
-                    <h1>
-                      {!user.activated && user.email}
-                      {user.activated && user?.username}
-                    </h1>
-                  </TableCell>
-                  <TableCell className="font-medium text-center">
-                    {user.activated && user.email}
-                    {!user.activated && "-"}
-                  </TableCell>
-                  <TableCell>
-                    {user.activated ? user.phoneNumber : "-"}{" "}
-                  </TableCell>
-                  <TableCell>
-                    {user.activated ? user.createdAt.toLocaleDateString() : "-"}
-                  </TableCell>
-                  <TableCell className="text-right">
-                    {user.activated ? "projects" : "-"}
-                  </TableCell>
-                  <TableCell className="text-right">
-                    <Badge
-                      variant={`${user.activated ? "working" : "pending"}`}>
-                      {user.activated ? "Working" : "Pending"}
-                    </Badge>
-                  </TableCell>
-                  <TableCell className="text-right flex justify-end gap-5 transform translate-y-[-25%]">
-                    <Trash
-                      onClick={(e: React.MouseEvent) => {
-                        e.stopPropagation();
-                        onOpen("removeUser", {
-                          user,
-                          identifierId,
-                        });
-                      }}
-                      className="h-4 w-4"
-                      role="button"
-                    />
-
-                    <Edit
-                      onClick={(e: React.MouseEvent) => {
-                        e.stopPropagation();
-                        onOpen("editUser", {
-                          user,
-                        });
-                      }}
-                      className="h-4 w-4"
-                      role="button"
-                    />
-                  </TableCell>
-                </TableRow>
-              );
-            })
+                      <Edit
+                        onClick={(e: React.MouseEvent) => {
+                          e.stopPropagation();
+                          onOpen("editUser", {
+                            user,
+                          });
+                        }}
+                        className="h-4 w-4"
+                        role="button"
+                      />
+                    </TableCell>
+                  </TableRow>
+                );
+              })
           )}
           {isFetchingNextPage && <MembersTable.Skeleton />}
         </TableBody>

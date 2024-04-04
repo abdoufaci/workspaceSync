@@ -58,7 +58,7 @@ export function ProfileInfosForm({ user }: ProfileInfosFormProps) {
     mutationFn: async ({ adress, role }: z.infer<typeof formSchema>) =>
       await updateUser({
         userId: user?.id,
-        role,
+        employeeRole: role,
         adress,
       }),
 
@@ -71,10 +71,10 @@ export function ProfileInfosForm({ user }: ProfileInfosFormProps) {
   });
 
   async function onSubmit({ adress, role }: z.infer<typeof formSchema>) {
-    updateUserMutation({
-      adress,
-      role,
-    });
+    //updateUserMutation({
+    //  adress,
+    //  role,
+    //});
   }
 
   return (
@@ -112,7 +112,7 @@ export function ProfileInfosForm({ user }: ProfileInfosFormProps) {
                     <SelectItem value={EmployeeRole.DEVELOPER}>
                       {EmployeeRole.DEVELOPER}
                     </SelectItem>
-                    <SelectItem value="apple">
+                    <SelectItem value={EmployeeRole.MARKETER}>
                       {EmployeeRole.MARKETER}
                     </SelectItem>
                     <SelectItem value={EmployeeRole.UX_UI_DESIGNER}>
