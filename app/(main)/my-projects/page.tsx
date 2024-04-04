@@ -7,6 +7,7 @@ import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 import { AnimatedTooltip } from "@/components/ui/animated-tooltip";
+import { formatDistanceToNow } from "date-fns";
 
 export default async function Page() {
   const projects = await getProjects();
@@ -26,23 +27,32 @@ export default async function Page() {
             <Link
               key={project.id}
               href={`my-projects/${project.id}`}
-              className="w-[32.3%]">
+              className="w-[32.3%]"
+            >
               <div className="flex flex-col gap-y-4 px-6 py-10 bg-white rounded-xl w-full">
                 <div className="flex items-center gap-x-2 justify-between">
-                  <div className="flex items-center gap-x-2">
+                  <div className="flex items-center gap-x-3">
                     <Image
                       alt="project image"
                       src={project.imageUrl || "/avatar.png"}
                       height={100}
                       width={100}
-                      className="h-16 w-16 rounded-md object-cover"
+                      className="h-24 w-24 rounded-xl object-cover"
                     />
-                    <h1 className="font-bold text-2xl">{project.title}</h1>
+                    <div>
+                      {project.to && (
+                        <p className="font-light text-sm">
+                          {formatDistanceToNow(new Date(project.to))} left
+                        </p>
+                      )}
+                      <h1 className="font-bold text-3xl">{project.title}</h1>
+                    </div>
                   </div>
                   <Badge
                     variant={
                       project.stat === "inProgress" ? "pending" : project.stat
-                    }>
+                    }
+                  >
                     {project.stat}
                   </Badge>
                 </div>

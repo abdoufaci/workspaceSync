@@ -4,6 +4,10 @@ import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Toaster } from "@/components/ui/sonner";
 import { QClientProvider } from "@/providers/QueryClientProvider";
+import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
+import { extractRouterConfig } from "uploadthing/server";
+
+import { ourFileRouter } from "@/app/api/uploadthing/core";
 
 const inter = Outfit({ subsets: ["latin"] });
 
@@ -28,7 +32,12 @@ export default function RootLayout({
       <html lang="en">
         <body className={inter.className}>
           <QClientProvider>
-            <main className="h-full w-full">{children}</main>
+            <main className="h-full w-full">
+              <NextSSRPlugin
+                routerConfig={extractRouterConfig(ourFileRouter)}
+              />
+              {children}
+            </main>
           </QClientProvider>
           <Toaster richColors />
         </body>
