@@ -11,7 +11,7 @@ import { AddProjectForm } from "../forms/AddProjectForm";
 import { ScrollArea } from "../ui/scroll-area";
 
 export const AddProject = () => {
-  const { isOpen, onClose, type } = useModal();
+  const { isOpen, onClose, type, data } = useModal();
 
   const isModalOpen = isOpen && type === "addProject";
 
@@ -24,7 +24,7 @@ export const AddProject = () => {
           </DialogTitle>
         </DialogHeader>
         <ScrollArea className="h-[600px] w-full rounded-md pr-4">
-          <AddProjectForm />
+          <AddProjectForm defaultValues={data} />
         </ScrollArea>
       </DialogContent>
     </Dialog>

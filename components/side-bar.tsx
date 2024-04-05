@@ -161,7 +161,7 @@ function SideBar() {
                 className={cn(
                   "flex items-center py-3 text-secondary-1 w-fit px-3 transition-all duration-200 ease-out",
                   openSideBar ? "gap-x-3 px-10" : "justify-center",
-                  pathname === label
+                  pathname.includes(label)
                     ? "bg-gradient-to-r from-[#4f5bd5] justify-center to-[#b224ef] rounded-full text-white  bg-blend-color-burn"
                     : ""
                 )}

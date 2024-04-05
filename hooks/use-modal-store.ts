@@ -25,6 +25,9 @@ interface ModalData {
   };
   identifierId?: string;
   taskType?: string;
+  project?: Project
+  teamLeader?: User
+  client?: User
 }
 
 interface ModalStore {

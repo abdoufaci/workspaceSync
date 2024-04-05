@@ -23,6 +23,11 @@ export default async function Page() {
             image: employee.imageUrl || "/avatar.png",
             designation: employee.employeeRole || "Chikoour",
           }));
+
+          let completed = 0;
+
+          project.steps.map((step) => step.completed && completed++);
+
           return (
             <Link
               key={project.id}
@@ -59,16 +64,26 @@ export default async function Page() {
                 <p className="text-sm font-extralight leading-tight">
                   {project.description}
                 </p>
-                <Progress
-                  value={
-                    project.stat === "completed"
+                <div>
+                  <p className="text-primary-blue">
+                    {project.stat === "completed"
                       ? 100
                       : project.stat === "notStarted"
                       ? 0
-                      : 50
-                  }
-                  className="h-[10px]"
-                />
+                      : Math.round((completed / project.steps.length) * 100)}
+                    %
+                  </p>
+                  <Progress
+                    value={
+                      project.stat === "completed"
+                        ? 100
+                        : project.stat === "notStarted"
+                        ? 0
+                        : (completed / project.steps.length) * 100
+                    }
+                    className="h-[10px]"
+                  />
+                </div>
                 <div className="ml-1 flex items-center gap-2">
                   <AnimatedTooltip items={items} />
                 </div>

@@ -23,7 +23,7 @@ import { Input } from "@/components/ui/input";
 import { useModal } from "@/hooks/use-modal-store";
 import { toast } from "sonner";
 import { useMutation } from "@tanstack/react-query";
-import { Stat, Step } from "@prisma/client";
+import { Project, Stat, Step, User } from "@prisma/client";
 
 import { Textarea } from "../ui/textarea";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
@@ -39,6 +39,7 @@ import { TeamLeader } from "@/app/(main)/my-projects/components/TeamLeader";
 import { Client } from "@/app/(main)/my-projects/components/Client";
 import { addProject } from "@/actions/mutations/project-actions/addProject";
 import { FileUpload } from "../FileUpload";
+import { editProject } from "@/actions/mutations/project-actions/editProject";
 
 export const AddProjectFormSchema = z.object({
   image: z.string().optional(),
@@ -58,7 +59,11 @@ export const AddProjectFormSchema = z.object({
   projectDetails: z.string(),
 });
 
-export function AddProjectForm() {
+export function AddProjectForm({
+  defaultValues,
+}: {
+  defaultValues?: { project?: Project; teamLeader?: User; client?: User };
+}) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const AssignToModalClose = () => {
     setIsModalOpen(false);
@@ -74,11 +79,20 @@ export function AddProjectForm() {
 
   const [value, setValue] = useState("");
 
-  const { mutate: addProjectMutation, isPending } = useMutation({
-    mutationFn: (data: z.infer<typeof AddProjectFormSchema>) =>
-      addProject(data),
+  const { mutate: addOrEditProjectMutation, isPending } = useMutation({
+    mutationFn: (data: z.infer<typeof AddProjectFormSchema>) => {
+      if (defaultValues?.project) {
+        editProject({ ...data, id: defaultValues.project.id });
+      } else {
+        addProject(data);
+      }
+    },
     onSuccess(data) {
-      toast.success("project added successfully");
+      toast.success(
+        defaultValues
+          ? "project edited successfully"
+          : "project added successfully"
+      );
     },
     onError(e) {
       console.log(e.message);
@@ -90,16 +104,34 @@ export function AddProjectForm() {
   });
 
   const { onClose } = useModal();
+  let defaultVals = {
+    assignTo: [],
+    steps: [],
+  };
+
+  if (defaultValues?.project) {
+    const { project, teamLeader, client } = defaultValues;
+
+    defaultVals = {
+      image: project.imageUrl,
+      title: project.title,
+      description: project.description,
+      assignTo: project.assignedTo,
+      timeline: { from: project.from, to: project.to },
+      stat: project.stat,
+      steps: project.steps,
+      projectDetails: project.projectDetails,
+      teamLeader,
+      client,
+    };
+  }
   const form = useForm<z.infer<typeof AddProjectFormSchema>>({
     resolver: zodResolver(AddProjectFormSchema),
-    defaultValues: {
-      assignTo: [],
-      steps: [],
-    },
+    defaultValues: defaultVals,
   });
 
   async function onSubmit(data: z.infer<typeof AddProjectFormSchema>) {
-    addProjectMutation(data);
+    addOrEditProjectMutation(data);
   }
 
   return (
@@ -491,7 +523,7 @@ export function AddProjectForm() {
           variant={"blue"}
           className="text-white w-full py-6 rounded-lg"
         >
-          Add Project
+          {defaultValues?.project ? "Edit Project" : "Add Project"}
         </Button>
       </form>
     </Form>
