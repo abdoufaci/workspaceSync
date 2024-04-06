@@ -1,6 +1,7 @@
 import { db } from "@/lib/db";
 
 export const getProjectById = async ({ id }: { id: string}) => {
+  try{
     const project = await db.project.findFirst({
       where: {
         id
@@ -9,18 +10,51 @@ export const getProjectById = async ({ id }: { id: string}) => {
       assignedTo: {
         select: {
           id: true,
-          firstName: true,
-          username: true,
           imageUrl: true,
-          employeeRole: true,
+          firstName: true,
+          lastName: true,
+          username: true,
+          employeeRole: true
         },
       },
-      steps: true,
-    },
-    orderBy: {
-      createdAt: "desc",
+      steps: {
+        select: {
+          title: true,
+          completed: true
+        },
+        orderBy : {
+          createdAt: "asc"
+        }
+      },
+      teamLeader: {
+        select: {
+          id: true,
+          imageUrl: true,
+          firstName: true,
+          lastName: true,
+          username: true,
+          employeeRole: true
+        }
+      },
+      client: {
+        select: {
+          id: true,
+          imageUrl: true,
+          firstName: true,
+          lastName: true,
+          username: true,
+          employeeRole: true
+        }
+      },
     },
   })
 
+  if(!project) {
+    throw new Error("Couldn't find the project you're looking for")
+  }
+
   return project;
+} catch(error: any) {
+  throw new Error(error.message || "Something went wrong fetching project infos")
+}
 };

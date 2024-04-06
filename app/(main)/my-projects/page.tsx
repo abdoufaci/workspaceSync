@@ -16,6 +16,7 @@ export default async function Page() {
     <div className="min-h-[calc(100vh-81px)] w-full p-6 bg-gray-sub-100">
       <ProjectsPageHeader />
       <div className="flex flex-row gap-x-4 gap-y-6 flex-wrap mt-4">
+        {projects.length == 0 && "no projects found"}
         {projects.map((project) => {
           let items = project.assignedTo.map((employee, idx) => ({
             id: idx,

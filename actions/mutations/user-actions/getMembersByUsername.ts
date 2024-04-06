@@ -16,7 +16,15 @@ export const getMembersByUsername = async ({
     const users = await db.user.findMany({
       where: {
         role,
-      }
+      },
+      select: {
+        id: true,
+        imageUrl: true,
+        firstName: true,
+        lastName: true,
+        username: true,
+        employeeRole: true
+      },
     })
 
     return users
@@ -24,11 +32,18 @@ export const getMembersByUsername = async ({
     const users = await db.user.findMany({
       where: {
         role,
-        //later : change it to username
         firstName: {
           contains: debouncedSearchTerm,
         },
-      }
+      },
+      select: {
+        id: true,
+        imageUrl: true,
+        firstName: true,
+        lastName: true,
+        username: true,
+        employeeRole: true
+      },
     })
 
     return users

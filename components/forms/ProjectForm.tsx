@@ -1,11 +1,5 @@
 "use client";
 
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -23,7 +17,7 @@ import { Input } from "@/components/ui/input";
 import { useModal } from "@/hooks/use-modal-store";
 import { toast } from "sonner";
 import { useMutation } from "@tanstack/react-query";
-import { Project, Stat, Step, User } from "@prisma/client";
+import { Project, Stat } from "@prisma/client";
 
 import { Textarea } from "../ui/textarea";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
@@ -40,33 +34,64 @@ import { Client } from "@/app/(main)/my-projects/components/Client";
 import { addProject } from "@/actions/mutations/project-actions/addProject";
 import { FileUpload } from "../FileUpload";
 import { editProject } from "@/actions/mutations/project-actions/editProject";
+import { addStep } from "@/actions/mutations/step-actions/addStep";
 
-export const AddProjectFormSchema = z.object({
-  image: z.string().optional(),
+export const ProjectFormSchema = z.object({
+  image: z.string().nullable().optional(),
   title: z.string().min(1, { message: "This field has to be filled." }),
   description: z.string(),
   assignTo: z
-    .array(z.any())
+    .array(
+      z.object({
+        id: z.string(),
+        imageUrl: z.string().nullable(),
+        firstName: z.string(),
+        lastName: z.string(),
+        username: z.string(),
+        employeeRole: z.string().nullable(),
+      })
+    )
     .nonempty({ message: "You have to select at least one employee." }),
-  teamLeader: z.any(),
-  client: z.any(),
+  teamLeader: z.object({
+    id: z.string(),
+    imageUrl: z.string().nullable(),
+    firstName: z.string(),
+    lastName: z.string(),
+    username: z.string(),
+    employeeRole: z.string().nullable(),
+  }),
+  client: z.object({
+    id: z.string(),
+    imageUrl: z.string().nullable(),
+    firstName: z.string(),
+    lastName: z.string(),
+    username: z.string(),
+    employeeRole: z.string().nullable(),
+  }),
   timeline: z.object({
     from: z.date(),
     to: z.date(),
   }),
   stat: z.enum([Stat.notStarted, Stat.inProgress, Stat.completed]),
-  steps: z.array(z.any()).nonempty(),
+  steps: z
+    .array(
+      z.object({
+        title: z.string(),
+        completed: z.boolean(),
+      })
+    )
+    .nonempty({ message: "You have to add at least one step." }),
   projectDetails: z.string(),
 });
 
-export function AddProjectForm({
-  defaultValues,
-}: {
-  defaultValues?: { project?: Project; teamLeader?: User; client?: User };
-}) {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+export function ProjectForm(
+  { defaultValues }: any /*{ defaultValues?: Project }*/
+) {
+  const { onClose } = useModal();
+
+  const [isAssignToModalOpen, setIsAssignToModalOpen] = useState(false);
   const AssignToModalClose = () => {
-    setIsModalOpen(false);
+    setIsAssignToModalOpen(false);
   };
   const [isTeamLeaderModalOpen, setIsTeamLeaderModalOpen] = useState(false);
   const TeamLeaderModalClose = () => {
@@ -80,57 +105,66 @@ export function AddProjectForm({
   const [value, setValue] = useState("");
 
   const { mutate: addOrEditProjectMutation, isPending } = useMutation({
-    mutationFn: (data: z.infer<typeof AddProjectFormSchema>) => {
-      if (defaultValues?.project) {
-        editProject({ ...data, id: defaultValues.project.id });
-      } else {
-        addProject(data);
+    mutationFn: (data: z.infer<typeof ProjectFormSchema>) =>
+      defaultValues
+        ? editProject({ ...data, id: defaultValues.id })
+        : addProject(data),
+    onSuccess(data: any) {
+      for (let i = 0; i < data.steps.length; i++) {
+        addStepMutation({
+          ...data.steps[i],
+          projectId: defaultValues ? defaultValues.id : data.projectId,
+          revalidate: i + 1 === data.steps.length,
+        });
       }
-    },
-    onSuccess(data) {
-      toast.success(
-        defaultValues
-          ? "project edited successfully"
-          : "project added successfully"
-      );
     },
     onError(e) {
       console.log(e.message);
       toast.error("Something went wrong.");
     },
-    onSettled() {
-      onClose();
+  });
+
+  const { mutate: addStepMutation, isPending: stepsPending } = useMutation({
+    mutationFn: (data: any) => addStep(data),
+    onError(e) {
+      console.log(e.message);
+      toast.error("Something went wrong.");
+    },
+    onSuccess(data) {
+      if (data.lastOne) {
+        toast.success(
+          defaultValues
+            ? "project edited successfully"
+            : "project added successfully"
+        );
+
+        onClose();
+      }
     },
   });
 
-  const { onClose } = useModal();
-  let defaultVals = {
-    assignTo: [],
-    steps: [],
-  };
-
-  if (defaultValues?.project) {
-    const { project, teamLeader, client } = defaultValues;
-
-    defaultVals = {
-      image: project.imageUrl,
-      title: project.title,
-      description: project.description,
-      assignTo: project.assignedTo,
-      timeline: { from: project.from, to: project.to },
-      stat: project.stat,
-      steps: project.steps,
-      projectDetails: project.projectDetails,
-      teamLeader,
-      client,
-    };
-  }
-  const form = useForm<z.infer<typeof AddProjectFormSchema>>({
-    resolver: zodResolver(AddProjectFormSchema),
-    defaultValues: defaultVals,
+  const form = useForm<z.infer<typeof ProjectFormSchema>>({
+    resolver: zodResolver(ProjectFormSchema),
+    defaultValues: defaultValues
+      ? {
+          image: defaultValues.imageUrl,
+          title: defaultValues.title,
+          description: defaultValues.description,
+          assignTo: defaultValues.assignedTo,
+          teamLeader: defaultValues.teamLeader,
+          client: defaultValues.client,
+          timeline: {
+            from: defaultValues.from,
+            to: defaultValues.to,
+          },
+          stat: defaultValues.stat,
+          steps: defaultValues.steps,
+          projectDetails: defaultValues.projectDetails,
+        }
+      : { assignTo: [], steps: [] },
   });
 
-  async function onSubmit(data: z.infer<typeof AddProjectFormSchema>) {
+  async function onSubmit(data: z.infer<typeof ProjectFormSchema>) {
     addOrEditProjectMutation(data);
   }
 
@@ -230,12 +264,12 @@ export function AddProjectForm({
                   }}
                   className="rounded-full"
                   onClick={() => {
-                    setIsModalOpen(true);
+                    setIsAssignToModalOpen(true);
                   }}
                 />
               </div>
               <AssignTo
-                isModalOpen={isModalOpen}
+                isModalOpen={isAssignToModalOpen}
                 onClose={AssignToModalClose}
                 form={form}
                 field={field}
@@ -433,7 +467,7 @@ export function AddProjectForm({
           render={({ field }) => (
             <FormItem className="w-full">
               <FormLabel className="text-gray-sub-300">Steps :</FormLabel>
-              {field.value.map((step: Step) => (
+              {field.value.map((step: any) => (
                 <div key={step.title} className="flex items-center gap-x-3">
                   <div className="flex p-2 border rounded-lg w-[160px] items-center justify-between">
                     <label
@@ -448,7 +482,7 @@ export function AddProjectForm({
                       checked={step.completed}
                       onClick={() => {
                         field.onChange(
-                          field.value.map((stp: Step) => {
+                          field.value.map((stp: any) => {
                             if (stp.title === step.title) {
                               stp.completed = !step.completed;
                             }
@@ -462,7 +496,7 @@ export function AddProjectForm({
                     onClick={() =>
                       field.onChange(
                         field.value?.filter(
-                          (stp: Step) => stp.title !== step.title
+                          (stp: any) => stp.title !== step.title
                         )
                       )
                     }
@@ -480,6 +514,7 @@ export function AddProjectForm({
                 ></Input>
                 <CircleFadingPlus
                   role="button"
+                  type="submit"
                   color="#1778ff"
                   strokeWidth={1.25}
                   style={{
@@ -487,14 +522,27 @@ export function AddProjectForm({
                   }}
                   className="rounded-full ml-[1px]"
                   onClick={() => {
-                    field.onChange([
-                      ...field.value,
-                      {
-                        title: value,
-                        completed: false,
-                      },
-                    ]);
-                    setValue("");
+                    if (value) {
+                      let existsAlready = false;
+                      field.value.forEach((step) => {
+                        if (step.title === value) existsAlready = true;
+                      });
+
+                      if (!existsAlready) {
+                        field.onChange([
+                          ...field.value,
+                          {
+                            title: value,
+                            completed: false,
+                          },
+                        ]);
+                        setValue("");
+                      } else {
+                        toast.warning("This step already exists!");
+                      }
+                    } else {
+                      toast.warning("Please provide a name for this step!");
+                    }
                   }}
                 />
               </div>
@@ -518,12 +566,12 @@ export function AddProjectForm({
           )}
         />
         <Button
-          disabled={isPending}
+          disabled={isPending || stepsPending}
           type="submit"
           variant={"blue"}
           className="text-white w-full py-6 rounded-lg"
         >
-          {defaultValues?.project ? "Edit Project" : "Add Project"}
+          {defaultValues ? "Edit Project" : "Add Project"}
         </Button>
       </form>
     </Form>

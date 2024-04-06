@@ -1,8 +1,7 @@
 "use server";
 
-import { AddProjectFormSchema } from "@/components/forms/AddProjectForm";
+import { ProjectFormSchema } from "@/components/forms/ProjectForm";
 import { db } from "@/lib/db";
-import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
 export const addProject = async ({
@@ -16,7 +15,7 @@ export const addProject = async ({
   stat,
   steps,
   projectDetails,
-}: z.infer<typeof AddProjectFormSchema>) => {
+}: z.infer<typeof ProjectFormSchema>) => {
   const newProject = await db.project.create({
     data: {
       imageUrl: image,
@@ -34,16 +33,5 @@ export const addProject = async ({
     },
   })
 
-  steps.map(async step => {
-    await db.step.create({
-      data: {
-        id: step.id,
-        title: step.title,
-        completed: step.completed,
-        projectId: newProject.id
-      },
-    })
-  })
-
-  revalidatePath("/my-projects")
+  return { steps, projectId: newProject.id}
 };

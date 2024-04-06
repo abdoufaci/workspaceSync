@@ -1,8 +1,7 @@
 "use server";
 
-import { AddProjectFormSchema } from "@/components/forms/AddProjectForm";
+import { ProjectFormSchema } from "@/components/forms/ProjectForm";
 import { db } from "@/lib/db";
-import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
 export const editProject = async ({
@@ -42,50 +41,12 @@ export const editProject = async ({
   })
 
   editedProject.steps.map(async step => {
-    let done = false
-
-    for(let i=0;i<steps.length;i++) {
-      if(step.id === steps[i].id) {
-        done = true
-
-        await db.step.update({
-          where: {
-            id: step.id
-          },
-          data: {
-            completed: steps[i].completed,
-          }
-        })
+    await db.step.delete({
+      where: {
+        id: step.id
       }
-    }
-
-    if(!done) {
-      await db.step.delete({
-        where: {
-          id: step.id
-        }
-      })
-    } 
+    }) 
   })
 
-  steps.map(async (step: any) => {
-    let done = false
-    for(let i=0;i<editedProject.steps.length;i++) {
-      if(step.id === editedProject.steps[i].id) {
-        done = true
-      }
-    }
-    if(!done) {
-      await db.step.create({
-        data: {
-          id: step.id,
-          title: step.title,
-          completed: step.completed,
-          projectId: editedProject.id
-        },
-      })
-    }
-  })
-
-  revalidatePath("/my-projects")
+  return { steps }
 };

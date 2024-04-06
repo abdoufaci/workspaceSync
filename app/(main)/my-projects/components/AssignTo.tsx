@@ -31,7 +31,7 @@ export const AssignTo = ({
   form,
   field,
 }: AssignToProps) => {
-  const [employees, setEmployees] = useState<User[]>([]);
+  const [employees, setEmployees] = useState<any[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [isSearching, setIsSearching] = useState(false);
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
@@ -66,7 +66,7 @@ export const AssignTo = ({
           </DialogTitle>
         </DialogHeader>
         <div className="flex gap-1 flex-wrap">
-          {field.value.map((employee: any) => (
+          {field.value.map((employee: User) => (
             <div
               key={employee.id}
               className="flex items-center gap-x-2 p-1 rounded-full bg-gray-200 w-fit"

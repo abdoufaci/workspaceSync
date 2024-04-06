@@ -1,18 +1,10 @@
 "use client";
 
 import { useModal } from "@/hooks/use-modal-store";
-import { Project, User } from "@prisma/client";
+import { Project } from "@prisma/client";
 import { MessageSquare, PenLine } from "lucide-react";
 
-export default function EditProjectBtn({
-  project,
-  teamLeader,
-  client,
-}: {
-  project: Project;
-  teamLeader: User;
-  client: User;
-}) {
+export default function EditProjectBtn({ project }: { project: Project }) {
   const { onOpen } = useModal();
 
   return (
@@ -20,7 +12,7 @@ export default function EditProjectBtn({
       <MessageSquare />
       <PenLine
         role="button"
-        onClick={() => onOpen("addProject", { project, teamLeader, client })}
+        onClick={() => onOpen("projectModal", { project })}
       />
     </div>
   );

@@ -12,8 +12,7 @@ export type ModalType =
   | "taskStatus"
   | "links"
   | "assignTo"
-  | "addProject"
-  | "editProject"
+  | "projectModal"
   | "inviteUser"
   | "removeUser"
   | "editUser";

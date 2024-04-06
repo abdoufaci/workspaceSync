@@ -8,7 +8,7 @@ import { UploadDropzone } from "@/utils/uploadthing";
 
 interface FileUploadProps {
   onChange: (url?: string) => void;
-  value?: string;
+  value?: string | null;
 }
 
 export const FileUpload = ({ onChange, value }: FileUploadProps) => {

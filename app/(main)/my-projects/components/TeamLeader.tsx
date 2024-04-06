@@ -29,7 +29,7 @@ export const TeamLeader = ({
   onClose,
   field,
 }: TeamLeaderProps) => {
-  const [employees, setEmployees] = useState<User[]>([]);
+  const [employees, setEmployees] = useState<any[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [isSearching, setIsSearching] = useState(false);
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
@@ -117,7 +117,7 @@ export const TeamLeader = ({
                   onValueChange={field.onChange}
                   className="flex flex-col"
                 >
-                  {employees?.map((employee: any) => (
+                  {employees?.map((employee) => (
                     <FormItem key={employee.id}>
                       <div
                         key={employee.id}
