@@ -71,10 +71,10 @@ export function ProfileInfosForm({ user }: ProfileInfosFormProps) {
   });
 
   async function onSubmit({ adress, role }: z.infer<typeof formSchema>) {
-    //updateUserMutation({
-    //  adress,
-    //  role,
-    //});
+    updateUserMutation({
+      adress,
+      role,
+    });
   }
 
   return (

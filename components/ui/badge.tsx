@@ -29,6 +29,7 @@ const badgeVariants = cva(
           "bg-[#FFD12E36] text-[#FFD12E] p-1.5 px-2.5 border border-black shadow-xl rounded font-semibold",
         workingState:
           "bg-[#E5FCDA] text-[#21D954] p-1.5 px-2.5 border border-black shadow-xl rounded font-semibold",
+        high: "bg-[#FF383829] text-[#FF3838] p-1.5 px-2.5 border-none rounded font-semibold",
       },
     },
     defaultVariants: {
