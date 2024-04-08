@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { TaskStatusModal } from "@/components/modals/TaskStatusModal";
 import { InviteModal } from "@/components/modals/InviteModal";
 import { RemoveMemberModal } from "@/components/modals/remove-member-modal";
-import { AddProject } from "@/components/modals/AddProject";
+import { ProjectModal } from "@/components/modals/ProjectModal";
 import { EditMemberModal } from "@/components/modals/edit-member-modal";
 import { AddTask } from "@/components/modals/add-task";
 /*import { InviteModal } from "@/components/modals/invite-modal";
@@ -36,7 +36,7 @@ export const ModalProvider = () => {
       <TaskStatusModal />
       <InviteModal />
       <RemoveMemberModal />
-      <AddProject />
+      <ProjectModal />
       <EditMemberModal />
       <AddTask />
     </>

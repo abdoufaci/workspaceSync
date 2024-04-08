@@ -17,7 +17,7 @@ export default function ProjectsPageHeader() {
           backgroundColor: "#E7F1F8",
         }}
         className="rounded-full"
-        onClick={() => onOpen("addProject")}
+        onClick={() => onOpen("projectModal")}
       />
     </div>
   );

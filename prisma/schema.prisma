@@ -45,6 +45,8 @@ model User {
   clientOfProjects Project[] @relation("client")
 
   projects Project[]
+  chats    Chat[]
+  messages Message[]
 
   cardId String?
   cards  Card[]
@@ -77,6 +79,7 @@ model Project {
 
   assignedTo User[]
   steps      Step[]
+  messages   Message[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -89,6 +92,32 @@ model Step {
 
   projectId String
   project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Chat {
+  id String @id @default(uuid())
+
+  users    User[] //will contain only two users
+  messages Message[]
+}
+
+model Message {
+  id      String @id @default(uuid())
+  content String @db.Text
+
+  fromId String
+  from   User   @relation(fields: [fromId], references: [id], onDelete: Cascade)
+
+  projectId String?
+  project   Project? @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  chatId String?
+  chat   Chat?   @relation(fields: [chatId], references: [id], onDelete: Cascade)
+
+  deleted Boolean @default(false)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

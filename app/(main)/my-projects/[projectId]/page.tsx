@@ -1,12 +1,11 @@
+import { currentUser } from "@clerk/nextjs";
 import { getProjectById } from "@/actions/queries/getProjectById";
 import { AnimatedTooltip } from "@/components/ui/animated-tooltip";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
 import { db } from "@/lib/db";
-import { currentUser } from "@clerk/nextjs";
 import { formatDistanceToNow } from "date-fns";
-import { MessageSquare, PenLine } from "lucide-react";
 import Image from "next/image";
 import EditProjectBtn from "../components/EditProjectBtn";
 
@@ -16,22 +15,6 @@ export default async function Page({
   params: { projectId: string };
 }) {
   const project = await getProjectById({ id: params.projectId });
-
-  if (!project) return <p>no project</p>;
-
-  const teamLeader = await db.user.findFirst({
-    where: {
-      id: project?.teamLeaderId,
-    },
-  });
-
-  const client = await db.user.findFirst({
-    where: {
-      id: project?.clientId,
-    },
-  });
-
-  if (!teamLeader || !client) return <p>somthing wrong happened</p>;
 
   let items = project.assignedTo.map((employee, idx) => ({
     id: idx,
@@ -47,11 +30,7 @@ export default async function Page({
   return (
     <div className="flex justify-center min-h-[calc(100vh-81px)] w-full p-6 bg-gray-sub-100">
       <div className="flex flex-col gap-y-8 px-6 py-10 bg-white rounded-xl w-[50%]">
-        <EditProjectBtn
-          project={project}
-          teamLeader={teamLeader}
-          client={client}
-        />
+        <EditProjectBtn project={project} />
         <div className="flex items-center gap-x-2 justify-between">
           <div className="flex items-center gap-x-3">
             <Image
@@ -105,7 +84,7 @@ export default async function Page({
         <Separator />
         <div className="flex gap-x-2">
           {project.steps.map((step, index) => (
-            <div key={step.id} className="w-full">
+            <div key={step.title} className="w-full">
               <div className="flex">
                 <h1 className="font-semibold text-lg">STEP {index + 1} :</h1>
                 <h1 className="text-lg">{step.title}</h1>

@@ -1,21 +1,25 @@
 import { db } from "@/lib/db";
 
 export const getProjects = async () => {
-  const projects = await db.project.findMany({
-    include: {
-      assignedTo: {
-        select: {
-          username: true,
-          imageUrl: true,
-          employeeRole: true,
+  try{
+    const projects = await db.project.findMany({
+      include: {
+        assignedTo: {
+          select: {
+            username: true,
+            imageUrl: true,
+            employeeRole: true,
+          },
         },
+        steps: true
       },
-      steps: true
-    },
-    orderBy: {
-      createdAt: "desc",
-    },
-  });
-
-  return projects;
+      orderBy: {
+        createdAt: "desc",
+      },
+    });  
+  
+    return projects;
+  } catch(error) {
+    throw new Error("Something went wrong fetching projects")
+  }
 };

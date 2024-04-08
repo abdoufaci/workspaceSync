@@ -25,7 +25,7 @@ interface ClientProps {
 }
 
 export const Client = ({ isModalOpen, onClose, field }: ClientProps) => {
-  const [clients, setClients] = useState<User[]>([]);
+  const [clients, setClients] = useState<any[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [isSearching, setIsSearching] = useState(false);
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
@@ -113,7 +113,7 @@ export const Client = ({ isModalOpen, onClose, field }: ClientProps) => {
                   onValueChange={field.onChange}
                   className="flex flex-col"
                 >
-                  {clients?.map((client: any) => (
+                  {clients?.map((client) => (
                     <FormItem key={client.id}>
                       <div
                         key={client.id}
