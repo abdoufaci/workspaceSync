@@ -3,7 +3,7 @@ import { db } from "@/lib/db";
 export const getCards = async () => {
   const tasks = await db.card.findMany({
     orderBy: {
-      order: "desc",
+      order: "asc",
     },
     include: {
       assignedTo: {
