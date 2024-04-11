@@ -49,9 +49,10 @@ export function AddTaskTitles({
   const bgColors = ["#FFDEDE", "#EDFFDE", "#DEFFF7", "#DEEDFF", "#FEDEFF"];
 
   const addTitle = () => {
-    console.log({
-      titleRef,
-    });
+    if (titleRef.current?.value === "") {
+      setShow(false);
+      return;
+    }
     setTitles([
       ...titles,
       {

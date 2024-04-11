@@ -152,7 +152,7 @@ function ListContainer({ lists }: ListContainerProps) {
             <div
               {...provided.droppableProps}
               ref={provided.innerRef}
-              className="w-full grid grid-cols-4 gap-x-5">
+              className="w-full grid grid-cols-4 gap-x-5 max-w-[1700px] mx-auto">
               {orderedData.map((list, idx) => (
                 <TaskList
                   className={list.className}

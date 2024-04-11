@@ -8,6 +8,8 @@ import Card from "./card";
 import { Card as ListCard, User } from "@prisma/client";
 import { AnimatedTooltip } from "@/components/ui/animated-tooltip";
 import { Draggable, Droppable } from "@hello-pangea/dnd";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import TaskDetail from "./task-detail";
 
 interface TaskListProps {
   title: string;
@@ -32,7 +34,7 @@ function TaskList({
     <div className="space-y-3">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-x-3">
-          <div className={cn(className)}></div>
+          <div className={cn("", className)}></div>
           <h1>{title}</h1>
         </div>
         <AddTaskButton taskType={type} />
@@ -45,7 +47,14 @@ function TaskList({
             {...provided.droppableProps}
             className="space-y-5">
             {cards.map((card, idx) => (
-              <Card card={card} key={card.id} idx={idx} />
+              <Sheet>
+                <SheetTrigger className="w-full">
+                  <Card card={card} key={card.id} idx={idx} />
+                </SheetTrigger>
+                <SheetContent>
+                  <TaskDetail card={card} />
+                </SheetContent>
+              </Sheet>
             ))}
             {provided.placeholder}
           </div>

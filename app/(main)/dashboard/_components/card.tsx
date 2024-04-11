@@ -3,11 +3,19 @@
 import { variants } from "@/components/forms/add-task-form";
 import { AnimatedTooltip } from "@/components/ui/animated-tooltip";
 import { Badge } from "@/components/ui/badge";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 import { Draggable } from "@hello-pangea/dnd";
 import { Card as ListCard, Prisma, User } from "@prisma/client";
 import { Paperclip } from "lucide-react";
 import Image from "next/image";
+import TaskDetail from "./task-detail";
 
 interface CardProps {
   card: ListCard & {
@@ -63,7 +71,7 @@ function Card({ card, idx }: CardProps) {
               </div>
             ))}
           </div>
-          <h1 className="font-semibold ">{card.title}</h1>
+          <h1 className="font-semibold text-left">{card.title}</h1>
           {card.imageUrl && (
             <Image
               src={card.imageUrl}
