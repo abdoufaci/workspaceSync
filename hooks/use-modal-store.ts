@@ -1,5 +1,5 @@
 //import { Channel, ChannelType, Server } from "@prisma/client";
-import { Project, Role, User } from "@prisma/client";
+import { Card, Project, Role, User } from "@prisma/client";
 import { SetStateAction } from "react";
 import { create } from "zustand";
 
@@ -15,7 +15,8 @@ export type ModalType =
   | "projectModal"
   | "inviteUser"
   | "removeUser"
-  | "editUser";
+  | "editUser"
+  | "editTask";
 
 interface ModalData {
   role?: Role;
@@ -24,9 +25,12 @@ interface ModalData {
   };
   identifierId?: string;
   taskType?: string;
-  project?: Project
-  teamLeader?: User
-  client?: User
+  project?: Project;
+  teamLeader?: User;
+  client?: User;
+  task?: Card & {
+    assignedTo: User[];
+  };
 }
 
 interface ModalStore {

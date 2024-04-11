@@ -27,7 +27,7 @@ export const FileUpload = ({ onChange, value }: FileUploadProps) => {
           color="#1778ff"
           strokeWidth={1.25}
           className="rounded-full w-16 h-16 float:right"
-          onClick={() => onChange(undefined)}
+          onClick={() => onChange("")}
         />
       </div>
     );

@@ -1,8 +1,11 @@
+"use client";
+
 import { variants } from "@/components/forms/add-task-form";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
+import { useModal } from "@/hooks/use-modal-store";
 import { cn } from "@/lib/utils";
 import { titlesState } from "@/titles";
 import { Card, Prisma, User } from "@prisma/client";
@@ -17,6 +20,8 @@ interface TaskDetailProps {
 }
 
 function TaskDetail({ card }: TaskDetailProps) {
+  const { onOpen } = useModal();
+
   const bgColors = {
     todo: {
       className: "bg-primary-blue",
@@ -29,7 +34,10 @@ function TaskDetail({ card }: TaskDetailProps) {
   return (
     <div className="relative h-screen">
       <div className="mb-5">
-        <PenLine className="h-4 w-4 text-secondary-1 cursor-pointer" />
+        <PenLine
+          onClick={() => onOpen("editTask", { task: card })}
+          className="h-4 w-4 text-secondary-1 cursor-pointer"
+        />
       </div>
       <ScrollArea className="h-[92%]">
         <div className="space-y-3">
