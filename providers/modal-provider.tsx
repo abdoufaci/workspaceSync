@@ -10,6 +10,7 @@ import { EditMemberModal } from "@/components/modals/edit-member-modal";
 import { AddTask } from "@/components/modals/add-task";
 import { EditTask } from "@/components/modals/edit-task";
 import { AddLabelModal } from "@/components/modals/add-label";
+import { FileMessageModal } from "@/components/modals/FileMessageModal";
 /*import { InviteModal } from "@/components/modals/invite-modal";
 import { CreateServerModal } from "@/components/modals/create-server-modal";
 import { MembersModal } from "@/components/modals/members-modal";
@@ -43,6 +44,7 @@ export const ModalProvider = () => {
       <AddTask />
       <EditTask />
       <AddLabelModal />
+      <FileMessageModal />
     </>
   );
 };

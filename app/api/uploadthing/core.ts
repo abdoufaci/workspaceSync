@@ -21,6 +21,16 @@ export const ourFileRouter = {
     .middleware(() => handleAuth())
     .onUploadComplete(() => {}),
   // This code RUNS ON YOUR SERVER after upload
+  fileMessageUploader: f({
+    image: { maxFileSize: "2MB", maxFileCount: 4 },
+    video: { maxFileSize: "256MB", maxFileCount: 1 },
+    audio: {maxFileSize: "2MB", maxFileCount: 1},
+    pdf: {maxFileSize: "2MB", maxFileCount: 1}
+  })
+    // Set permissions and file types for this FileRoute
+    .middleware(() => handleAuth())
+      // This code runs on your server before upload
+    .onUploadComplete(() => {}),
 } satisfies FileRouter;
 
 export type OurFileRouter = typeof ourFileRouter;

@@ -106,8 +106,8 @@ model Chat {
 }
 
 model Message {
-  id      String @id @default(uuid())
-  content String @db.Text
+  id       String           @id @default(uuid())
+  contents MessageContent[]
 
   fromId String
   from   User   @relation(fields: [fromId], references: [id], onDelete: Cascade)
@@ -122,6 +122,24 @@ model Message {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+enum MessageContentType {
+  text
+  video
+  image
+  audio
+  pdf
+}
+
+model MessageContent {
+  id      String             @id @default(uuid())
+  type    MessageContentType
+  name    String?
+  content String             @db.Text
+
+  messageId String
+  message   Message @relation(fields: [messageId], references: [id], onDelete: Cascade)
 }
 
 enum Priority {

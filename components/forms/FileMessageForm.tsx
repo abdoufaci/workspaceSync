@@ -1,0 +1,217 @@
+"use client";
+
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { addMessage } from "@/actions/mutations/chat-actions/addMessage";
+import { UploadButton, UploadDropzone, uploadFiles } from "@/utils/uploadthing";
+
+import { useCallback, useState } from "react";
+import { File, Plus } from "lucide-react";
+import { useModal } from "@/hooks/use-modal-store";
+import { FileUpload } from "../FileUpload";
+import { DialogFooter } from "../ui/dialog";
+import { Button } from "../ui/button";
+
+import { useDropzone } from "@uploadthing/react";
+import { generateClientDropzoneAccept } from "uploadthing/client";
+
+import { useUploadThing } from "@/utils/uploadthing";
+import Image from "next/image";
+import { ScrollArea } from "../ui/scroll-area";
+import { toast } from "sonner";
+import Link from "next/link";
+
+const formSchema = z.object({
+  files: z.array(z.any()),
+  message: z.string().optional(),
+});
+
+export default function FileMessageForm({ userId, projectId, chatId }: any) {
+  const [files, setFiles] = useState<File[]>([]);
+  const onDrop = useCallback((acceptedFiles: File[]) => {
+    const urls = [];
+
+    for (let i = 0; i < acceptedFiles.length; i++) {
+      urls.push({
+        type: acceptedFiles[i].type,
+        name: acceptedFiles[i].name,
+        url: URL.createObjectURL(acceptedFiles[i]),
+      });
+    }
+
+    form.setValue("files", form.getValues().files.concat(urls));
+    setFiles((prev) => prev.concat(acceptedFiles));
+  }, []);
+
+  const { startUpload, permittedFileInfo } = useUploadThing(
+    "fileMessageUploader",
+    {
+      onClientUploadComplete: () => {
+        toast.success("uploaded successfully!");
+      },
+      onUploadError: (e) => {
+        toast.error(e.message);
+      },
+      onUploadBegin: () => {
+        alert("upload has begun");
+      },
+    }
+  );
+
+  const fileTypes = permittedFileInfo?.config
+    ? Object.keys(permittedFileInfo?.config)
+    : [];
+
+  const { getRootProps, getInputProps } = useDropzone({
+    onDrop,
+    accept: fileTypes ? generateClientDropzoneAccept(fileTypes) : undefined,
+  });
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: { files: [] },
+  });
+
+  async function onSubmit(data: z.infer<typeof formSchema>) {
+    const res = await startUpload(files);
+    const messageContents = [];
+
+    if (res) {
+      for (let i = 0; i < data.files.length; i++) {
+        messageContents.push({
+          name: data.files[i].name,
+          type:
+            data.files[i].type === "image/jpeg"
+              ? "image"
+              : data.files[i].type === "video/mp4"
+              ? "video"
+              : "pdf",
+          content: res[i].url,
+        });
+      }
+
+      messageContents.push({
+        type: "text",
+        content: data.message,
+      });
+
+      await addMessage({ messageContents, fromId: userId, projectId, chatId });
+    }
+  }
+
+  return (
+    <Form {...form}>
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="space-y-4 flex- flex-col"
+      >
+        <FormField
+          control={form.control}
+          name="files"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <div className="flex flex-col gap-y-2 bg-gray-sub-100 p-2 rounded-lg">
+                  <ScrollArea className="h-[300px]">
+                    {field.value.length == 0 ? (
+                      <div
+                        {...getRootProps()}
+                        className="flex justify-center items-center h-[300px]"
+                      >
+                        <input {...getInputProps()} />
+                        <div className="p-2 text-white text-lg bg-primary-blue rounded-xl w-fit hover:cursor-pointer">
+                          Choose File(s)
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="flex flex-wrap">
+                        {field.value.map((file: any) => (
+                          <div
+                            className="flex bg-gray-200 border w-[300px] items-center m-[2px] rounded-md"
+                            key={file.url}
+                          >
+                            {file.type == "image/jpeg" ? (
+                              <Image
+                                alt="media image"
+                                src={file.url}
+                                width={1000}
+                                height={1000}
+                                className="rounded-md object-fill"
+                              />
+                            ) : file.type == "video/mp4" ? (
+                              <video
+                                width="320"
+                                height="240"
+                                controls
+                                preload="none"
+                              >
+                                <source src={file.url} type="video/mp4" />
+                                Your browser does not support the video tag.
+                              </video>
+                            ) : (
+                              <Link
+                                target="_blank"
+                                href={file.url}
+                                className="flex justify-center items-center w-full gap-x-1 h-[70px] bg-[#c61a0e] text-[#eee3e4] rounded-xl"
+                              >
+                                <File />
+                                {file.name}
+                              </Link>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </ScrollArea>
+                  {field.value.length > 0 && (
+                    <div {...getRootProps()} className="flex justify-center">
+                      <input {...getInputProps()} />
+                      <div className="p-3 text-white text-lg bg-primary-blue rounded-xl w-fit hover:cursor-pointer">
+                        Add Files
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <div className="flex gap-x-2">
+          <FormField
+            control={form.control}
+            name="message"
+            render={({ field }) => (
+              <FormItem className="w-full">
+                <FormControl>
+                  <Input
+                    className="h-[50px] border-0 py-6 text-lg"
+                    placeholder="Add a caption..."
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <Button
+            type="submit"
+            className="bg-primary-blue hover:bg-primary-blue h-[50px] w-[100px] text-xl"
+          >
+            Send
+          </Button>
+        </div>
+      </form>
+    </Form>
+  );
+}

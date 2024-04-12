@@ -17,7 +17,8 @@ export type ModalType =
   | "removeUser"
   | "editUser"
   | "editTask"
-  | "addLabel";
+  | "addLabel"
+  | "fileMessageModal";
 
 interface ModalData {
   role?: Role;
