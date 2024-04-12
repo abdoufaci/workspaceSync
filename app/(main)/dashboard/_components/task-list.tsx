@@ -19,6 +19,7 @@ interface TaskListProps {
     assignedTo: User[];
   })[];
   idx: number;
+  currentUser: User | null;
 }
 
 function TaskList({
@@ -27,6 +28,7 @@ function TaskList({
   type,
   cards: allCards,
   idx,
+  currentUser,
 }: TaskListProps) {
   const cards = allCards.filter((card) => card.listId === type);
 
@@ -52,7 +54,7 @@ function TaskList({
                   <Card card={card} key={card.id} idx={idx} />
                 </SheetTrigger>
                 <SheetContent>
-                  <TaskDetail card={card} />
+                  <TaskDetail card={card} currentUser={currentUser} />
                 </SheetContent>
               </Sheet>
             ))}

@@ -31,6 +31,7 @@ interface ModalData {
   task?: Card & {
     assignedTo: User[];
   };
+  currentUserId?: string;
 }
 
 interface ModalStore {

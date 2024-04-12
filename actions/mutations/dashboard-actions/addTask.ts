@@ -1,5 +1,6 @@
 "use server";
 
+import { getCurrentUser } from "@/actions/queries/getCurrentUser";
 import { AddTaskFormSchema } from "@/components/forms/add-task-form";
 import { db } from "@/lib/db";
 import { revalidatePath } from "next/cache";
@@ -20,6 +21,12 @@ export const AddTask = async (
   if (!listId) {
     throw new Error("List ID not found [Add_Task]");
   }
+
+  const currentUser = await getCurrentUser();
+
+  console.log({
+    serverCurrentUser: currentUser?.id,
+  });
 
   const converted = {
     description,
@@ -58,6 +65,7 @@ export const AddTask = async (
       ...converted,
       listId: listId || "",
       order: newOrder,
+      creatorId: currentUser?.id,
     },
   });
 

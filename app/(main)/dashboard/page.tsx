@@ -8,14 +8,17 @@ import { getCards } from "@/actions/queries/getCards";
 import { DragDropContext, Droppable } from "@hello-pangea/dnd";
 import ListContainer from "./_components/list-container";
 import { regroupedCards } from "@/groupedCards";
+import { getCurrentUser } from "@/actions/queries/getCurrentUser";
 
 async function Page() {
   const cards = await getCards();
+  const currentUser = await getCurrentUser();
 
   return (
     <ListContainer
       //@ts-ignore
       lists={regroupedCards({ cards })}
+      currentUser={currentUser}
     />
   );
 }

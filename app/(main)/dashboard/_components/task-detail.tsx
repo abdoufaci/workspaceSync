@@ -17,9 +17,10 @@ interface TaskDetailProps {
   card: Card & {
     assignedTo: User[];
   };
+  currentUser: User | null;
 }
 
-function TaskDetail({ card }: TaskDetailProps) {
+function TaskDetail({ card, currentUser }: TaskDetailProps) {
   const { onOpen } = useModal();
 
   const bgColors = {
@@ -35,7 +36,9 @@ function TaskDetail({ card }: TaskDetailProps) {
     <div className="relative h-screen">
       <div className="mb-5">
         <PenLine
-          onClick={() => onOpen("editTask", { task: card })}
+          onClick={() =>
+            onOpen("editTask", { task: card, currentUserId: currentUser?.id })
+          }
           className="h-4 w-4 text-secondary-1 cursor-pointer"
         />
       </div>
@@ -141,7 +144,7 @@ function TaskDetail({ card }: TaskDetailProps) {
               src={card.imageUrl}
               height={500}
               width={500}
-              className="w-full rounded-lg"
+              className="w-full rounded-lg object-cover"
             />
           )}
           <div className="space-y-3">

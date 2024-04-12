@@ -14,7 +14,7 @@ import { useModal } from "@/hooks/use-modal-store";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CircleFadingPlus, CircleMinus, X } from "lucide-react";
 import Image from "next/image";
-import { useFieldArray, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { AssignTo } from "../../app/(main)/my-projects/components/AssignTo";
 import { DatePickerWithRange } from "../../app/(main)/my-projects/components/DatePickerWithRange";
@@ -76,7 +76,11 @@ export function AddTaskForm() {
 
   const { onClose, data } = useModal();
 
-  const { taskType } = data;
+  const { taskType, currentUserId } = data;
+
+  console.log({
+    currentUserId,
+  });
 
   const [titles, setTitles] = useState<
     {

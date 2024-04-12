@@ -1,10 +1,5 @@
-import {
-  LayoutGrid,
-  ListChecks,
-  MessageSquare,
-  Settings,
-  Users,
-} from "lucide-react";
+import { LayoutGrid, ListChecks, MessageSquare, Users } from "lucide-react";
+
 export const sidebarcontent = [
   {
     title: "Dashboard",
@@ -25,10 +20,5 @@ export const sidebarcontent = [
     title: "Members",
     icon: <Users className="h-4 w-4 " />,
     label: "/members",
-  },
-  {
-    title: "Settings",
-    icon: <Settings className="h-4 w-4 " />,
-    label: "/settings",
   },
 ];
