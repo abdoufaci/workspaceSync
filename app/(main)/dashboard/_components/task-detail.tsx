@@ -45,7 +45,7 @@ function TaskDetail({ card }: TaskDetailProps) {
           className="h-4 w-4 text-secondary-1 cursor-pointer"
         />
       </div>
-      <ScrollArea className="h-[92%]">
+      <ScrollArea className="h-[90vh]">
         <div className="space-y-3">
           <div className="flex flex-wrap gap-3">
             <Badge
@@ -177,6 +177,7 @@ function TaskDetail({ card }: TaskDetailProps) {
               <h1>Labels</h1>
             </div>
             <Button
+              onClick={() => onOpen("addLabel", { task: card })}
               className="h-auto w-auto p-2 text-gray-sub-300"
               variant={"ghost"}>
               <Plus className="h-4 w-4" />

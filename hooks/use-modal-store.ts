@@ -16,7 +16,8 @@ export type ModalType =
   | "inviteUser"
   | "removeUser"
   | "editUser"
-  | "editTask";
+  | "editTask"
+  | "addLabel";
 
 interface ModalData {
   role?: Role;
