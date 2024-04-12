@@ -24,9 +24,9 @@ export const AddTask = async (
 
   const currentUser = await getCurrentUser();
 
-  console.log({
-    serverCurrentUser: currentUser?.id,
-  });
+  if (!currentUser) {
+    throw new Error("currentUser not found [Add_Task]");
+  }
 
   const converted = {
     description,

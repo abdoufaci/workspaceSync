@@ -16,11 +16,15 @@ import Link from "next/link";
 interface TaskDetailProps {
   card: Card & {
     assignedTo: User[];
+  } & {
+    creator: {
+      imageUrl: string | null;
+      username: string | null;
+    };
   };
-  currentUser: User | null;
 }
 
-function TaskDetail({ card, currentUser }: TaskDetailProps) {
+function TaskDetail({ card }: TaskDetailProps) {
   const { onOpen } = useModal();
 
   const bgColors = {
@@ -32,13 +36,12 @@ function TaskDetail({ card, currentUser }: TaskDetailProps) {
     inreview: { className: "bg-orange", title: "In Review " },
     completed: { className: "bg-success", title: "Completed " },
   };
+
   return (
     <div className="relative h-screen">
       <div className="mb-5">
         <PenLine
-          onClick={() =>
-            onOpen("editTask", { task: card, currentUserId: currentUser?.id })
-          }
+          onClick={() => onOpen("editTask", { task: card })}
           className="h-4 w-4 text-secondary-1 cursor-pointer"
         />
       </div>
@@ -70,6 +73,27 @@ function TaskDetail({ card, currentUser }: TaskDetailProps) {
         </div>
         <Separator className="my-3" />
         <div className="space-y-5">
+          <div
+            className={cn(
+              "flex flex-wrap gap-3",
+              card.assignedTo.length > 1 ? "items-start" : "items-center"
+            )}>
+            <h1 className="text-gray-sub-300 text-sm whitespace-nowrap">
+              Created By
+            </h1>
+            <div className="flex items-center gap-2 rounded-full p-1 border pr-2 ">
+              <Image
+                alt="avatar"
+                src={card.creator.imageUrl || ""}
+                height={100}
+                width={100}
+                className="w-7 h-7 rounded-full"
+              />
+              <h1 className="text-xs text-secondary-1">
+                {card.creator.username}
+              </h1>
+            </div>
+          </div>
           <div
             className={cn(
               "flex flex-wrap gap-3",

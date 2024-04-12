@@ -15,6 +15,12 @@ export const getCards = async () => {
           employeeRole: true,
         },
       },
+      creator: {
+        select: {
+          imageUrl: true,
+          username: true,
+        },
+      },
     },
   });
 

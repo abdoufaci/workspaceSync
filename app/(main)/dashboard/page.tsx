@@ -12,13 +12,11 @@ import { getCurrentUser } from "@/actions/queries/getCurrentUser";
 
 async function Page() {
   const cards = await getCards();
-  const currentUser = await getCurrentUser();
 
   return (
     <ListContainer
       //@ts-ignore
       lists={regroupedCards({ cards })}
-      currentUser={currentUser}
     />
   );
 }

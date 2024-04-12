@@ -4,12 +4,22 @@ import { lists } from "./dashboard-lists";
 interface regroupedCardsProps {
   cards: (Card & {
     assignedTo: User[];
+  } & {
+    creator: {
+      imageUrl: string | null;
+      username: string | null;
+    };
   })[];
 }
 
 export type listsType = {
   cards: (Card & {
     assignedTo: User[];
+  } & {
+    creator: {
+      imageUrl: string | null;
+      username: string | null;
+    };
   })[];
   title: string;
   className: string;

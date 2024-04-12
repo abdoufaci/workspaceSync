@@ -7,6 +7,11 @@ import { revalidatePath } from "next/cache";
 interface updateCardsProps {
   cards: (Card & {
     assignedTo: User[];
+  } & {
+    creator: {
+      imageUrl: string | null;
+      username: string | null;
+    };
   })[];
 }
 

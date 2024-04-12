@@ -12,12 +12,16 @@ import { toast } from "sonner";
 
 interface ListContainerProps {
   lists: listsType;
-  currentUser: User | null;
 }
 
 type cardType = {
   cards: (Card & {
     assignedTo: User[];
+  } & {
+    creator: {
+      imageUrl: string | null;
+      username: string | null;
+    };
   })[];
 };
 
@@ -29,7 +33,7 @@ function reorder<T>(list: T[], startIndex: number, endIndex: number) {
   return result;
 }
 
-function ListContainer({ lists, currentUser }: ListContainerProps) {
+function ListContainer({ lists }: ListContainerProps) {
   const [orderedData, setOrderedData] = useState(lists);
 
   useEffect(() => {
@@ -163,7 +167,6 @@ function ListContainer({ lists, currentUser }: ListContainerProps) {
                   //@ts-ignore
                   cards={list.cards}
                   idx={idx}
-                  currentUser={currentUser}
                 />
               ))}
             </div>

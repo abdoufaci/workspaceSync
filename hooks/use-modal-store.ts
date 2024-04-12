@@ -30,6 +30,11 @@ interface ModalData {
   client?: User;
   task?: Card & {
     assignedTo: User[];
+  } & {
+    creator: {
+      imageUrl: string | null;
+      username: string | null;
+    };
   };
   currentUserId?: string;
 }

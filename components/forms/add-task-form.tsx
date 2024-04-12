@@ -76,11 +76,7 @@ export function AddTaskForm() {
 
   const { onClose, data } = useModal();
 
-  const { taskType, currentUserId } = data;
-
-  console.log({
-    currentUserId,
-  });
+  const { taskType } = data;
 
   const [titles, setTitles] = useState<
     {
