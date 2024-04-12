@@ -9,7 +9,7 @@ import { useModal } from "@/hooks/use-modal-store";
 import { cn } from "@/lib/utils";
 import { titlesState } from "@/titles";
 import { Card, Prisma, User } from "@prisma/client";
-import { Calendar, Paperclip, PenLine, Plus } from "lucide-react";
+import { Calendar, Download, Paperclip, PenLine, Plus } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -183,6 +183,21 @@ function TaskDetail({ card }: TaskDetailProps) {
               <Plus className="h-4 w-4" />
               <h1>Add label</h1>
             </Button>
+            <div className="space-y-3">
+              {card.labels &&
+                //@ts-ignore
+                card.labels.map((label) => (
+                  <div className="w-full p-4 rounded-md bg-[#1B72F30D] flex items-center justify-between">
+                    <h1>{label.title}</h1>
+                    <Link href={label.file} target="_blank" download>
+                      <Download
+                        className="w-4 h-4 text-gray-sub-300 hover:text-gray-sub-400 
+                      transition-all duration-200 ease-out cursor-pointer"
+                      />
+                    </Link>
+                  </div>
+                ))}
+            </div>
           </div>
         </div>
       </ScrollArea>

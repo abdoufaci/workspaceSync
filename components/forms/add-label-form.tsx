@@ -28,6 +28,7 @@ import { useMutation } from "@tanstack/react-query";
 import { Card, Role, User } from "@prisma/client";
 import { useMembersQuery } from "@/hooks/use-query-members";
 import { FileUpload } from "../FileUpload";
+import { addLabel } from "@/actions/mutations/dashboard-actions/addLabel";
 
 export const AddLabelFormSchema = z.object({
   file: z.string().min(1, { message: "This field has to be filled." }),
@@ -46,23 +47,20 @@ interface AddLabelFormProps {
 }
 
 export function AddLabelForm({ task }: AddLabelFormProps) {
-  // const { mutate: inviteUserMutation, isPending } = useMutation({
-  //   mutationFn: ({ email, role }: z.infer<typeof AddLabelFormSchema>) =>
-  //     inviteUser({
-  //       email,
-  //       role,
-  //     }),
-  //   onSuccess(data) {
-  //     console.log({ data });
-  //     toast.success("user invited successfully");
-  //   },
-  //   onError() {
-  //     toast.error("Something went wrong.");
-  //   },
-  //   onSettled() {
-  //     onClose();
-  //   },
-  // });
+  const { mutate: addLabelMutation, isPending } = useMutation({
+    mutationFn: (data: z.infer<typeof AddLabelFormSchema>) =>
+      addLabel(data, task),
+    onSuccess(data) {
+      console.log({ data });
+      toast.success("user invited successfully");
+    },
+    onError() {
+      toast.error("Something went wrong.");
+    },
+    onSettled() {
+      onClose();
+    },
+  });
 
   const { onClose } = useModal();
   const form = useForm<z.infer<typeof AddLabelFormSchema>>({
@@ -73,9 +71,7 @@ export function AddLabelForm({ task }: AddLabelFormProps) {
   });
 
   async function onSubmit(data: z.infer<typeof AddLabelFormSchema>) {
-    console.log({
-      data,
-    });
+    addLabelMutation(data);
   }
 
   return (
@@ -119,10 +115,10 @@ export function AddLabelForm({ task }: AddLabelFormProps) {
           )}
         />
         <Button
-          // disabled={isPending}
+          disabled={isPending}
           type="submit"
           variant={"blue"}
-          className="text-white w-[115px]">
+          className="text-white w-full rounded-md">
           Add Label
         </Button>
       </form>
