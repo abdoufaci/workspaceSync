@@ -17,7 +17,7 @@ export default function UserChatCard({ otherUser }: any) {
         src={otherUser.imageUrl || "/avatar.png"}
         height={"200"}
         width={"200"}
-        className="h-16 w-16 rounded-xl"
+        className="h-16 w-16 rounded-full"
       />
       <h1 className="text-xl font-semibold">{otherUser.firstName}</h1>
     </div>

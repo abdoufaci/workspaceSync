@@ -1,10 +1,10 @@
 import { getCurrentUser } from "@/actions/queries/getCurrentUser";
 import { Input } from "@/components/ui/input";
 import { db } from "@/lib/db";
-import Image from "next/image";
 import Link from "next/link";
 import ProjectCard from "./ProjectCard";
 import UserChatCard from "./UserChatCard";
+import ChatSearch from "./ChatSearch";
 
 export default async function ChatsSidebar() {
   const currentUser = await getCurrentUser();
@@ -48,7 +48,9 @@ export default async function ChatsSidebar() {
     },
   });
 
-  if (!data) {
+  const allProjects = await db.project.findMany(); //bad way to do it, gonna change it later
+
+  if (!data || !allProjects) {
     return <p>something went wrong</p>;
   }
 
@@ -56,20 +58,10 @@ export default async function ChatsSidebar() {
 
   return (
     <div className="flex flex-col p-2">
-      <Input
-        className="bg-gray-sub-100 mb-2 h-12 p-4"
-        placeholder="doesn't work yet..."
+      <ChatSearch
+        chats={chats}
+        projects={data.role == "MANAGER" ? allProjects : projects}
       />
-      {projects.map((project) => (
-        <Link key={project.id} href={`/messages/groupe/${project.id}`}>
-          <ProjectCard project={project} />
-        </Link>
-      ))}
-      {chats.map((chat) => (
-        <Link key={chat.users[0].id} href={`/messages/${chat.users[0].id}`}>
-          <UserChatCard otherUser={chat.users[0]} />
-        </Link>
-      ))}
     </div>
   );
 }

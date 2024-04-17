@@ -16,7 +16,7 @@ import { addMessage } from "@/actions/mutations/chat-actions/addMessage";
 import { uploadFiles } from "@/utils/uploadthing";
 
 import { EmojiPicker } from "./EmojiPicker";
-import { Mic, Paperclip, SendHorizontal, Trash } from "lucide-react";
+import { Loader2, Mic, Paperclip, SendHorizontal, Trash } from "lucide-react";
 import { useModal } from "@/hooks/use-modal-store";
 import { useAudioRecorder } from "react-audio-voice-recorder";
 import { useEffect, useState } from "react";
@@ -27,6 +27,7 @@ const formSchema = z.object({
 
 export default function ChatInput({ userId, projectId, chatId }: any) {
   const [uploadAudio, setUploadAudio] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const {
     startRecording,
     stopRecording,
@@ -39,10 +40,14 @@ export default function ChatInput({ userId, projectId, chatId }: any) {
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {},
+    defaultValues: {
+      message: "",
+    },
   });
 
   async function onSubmit({ message }: z.infer<typeof formSchema>) {
+    setIsLoading(true);
+
     await addMessage({
       messageContents: [
         {
@@ -54,6 +59,9 @@ export default function ChatInput({ userId, projectId, chatId }: any) {
       projectId,
       chatId,
     });
+
+    setIsLoading(false);
+    form.resetField("message");
   }
 
   const addAudioElement = async () => {
@@ -65,6 +73,7 @@ export default function ChatInput({ userId, projectId, chatId }: any) {
     if (recordingBlob && uploadAudio == true) {
       setUploadAudio(false);
       const uploadAudioFunction = async () => {
+        setIsLoading(true);
         const files = [new File([recordingBlob], "test.webm")];
         const res = await uploadFiles("fileMessageUploader", {
           files,
@@ -81,6 +90,7 @@ export default function ChatInput({ userId, projectId, chatId }: any) {
           projectId,
           chatId,
         });
+        setIsLoading(false);
       };
 
       uploadAudioFunction();
@@ -104,6 +114,7 @@ export default function ChatInput({ userId, projectId, chatId }: any) {
                       }
                     />
                     <Input
+                      disabled={isLoading}
                       className="h-[50px] bg-transparent border-0 py-6 text-lg"
                       placeholder="Write your message..."
                       {...field}
@@ -127,29 +138,35 @@ export default function ChatInput({ userId, projectId, chatId }: any) {
                       </div>
                     )}
                   </div>
-                  {field.value ? (
-                    <button type="submit">
-                      <SendHorizontal
-                        role="button"
-                        className="text-white bg-primary-blue rounded-full w-[40px] h-[40px] p-[8px]"
-                      />
-                    </button>
+                  {isLoading ? (
+                    <Loader2 className="h-6 w-6 animate-spin" />
                   ) : (
                     <>
-                      {!isRecording ? (
-                        <div className="text-white bg-primary-blue rounded-full w-[40px] h-[40px] p-[8px]">
-                          <Mic role="button" onClick={startRecording} />
-                        </div>
-                      ) : (
-                        <>
-                          <div className="bg-gray-800 text-rose-500 rounded-full w-[40px] h-[40px] p-[8px]">
-                            <Trash role="button" onClick={stopRecording} />
-                          </div>
+                      {field.value ? (
+                        <button type="submit">
                           <SendHorizontal
                             role="button"
                             className="text-white bg-primary-blue rounded-full w-[40px] h-[40px] p-[8px]"
-                            onClick={addAudioElement}
                           />
+                        </button>
+                      ) : (
+                        <>
+                          {!isRecording ? (
+                            <div className="text-white bg-primary-blue rounded-full w-[40px] h-[40px] p-[8px]">
+                              <Mic role="button" onClick={startRecording} />
+                            </div>
+                          ) : (
+                            <>
+                              <div className="bg-gray-800 text-rose-500 rounded-full w-[40px] h-[40px] p-[8px]">
+                                <Trash role="button" onClick={stopRecording} />
+                              </div>
+                              <SendHorizontal
+                                role="button"
+                                className="text-white bg-primary-blue rounded-full w-[40px] h-[40px] p-[8px]"
+                                onClick={addAudioElement}
+                              />
+                            </>
+                          )}
                         </>
                       )}
                     </>

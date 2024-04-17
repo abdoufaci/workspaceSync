@@ -5,6 +5,7 @@ import Image from "next/image";
 import ChatInput from "../../components/ChatInput";
 import Link from "next/link";
 import { File } from "lucide-react";
+import GroupeMessages from "../../components/GroupeMessages";
 
 export default async function page({
   params,
@@ -70,77 +71,7 @@ export default async function page({
           <h1 className="text-2xl font-semibold">{project.title}</h1>
         </div>
         <ScrollArea className="flex-1">
-          <div className="flex flex-col">
-            {project.messages.map((message) => (
-              <div
-                key={message.id}
-                className={`flex px-4 py-2 gap-x-2 hover:bg-gray-200 ${
-                  currentUser?.id == message.fromId &&
-                  "self-end flex-row-reverse"
-                }`}
-              >
-                <Image
-                  alt="logo"
-                  src={message.from.imageUrl || "/avatar.png"}
-                  height={"200"}
-                  width={"200"}
-                  className="h-12 w-12 rounded-xl"
-                />
-                <div className="flex flex-col gap-y-1">
-                  <h1
-                    className={`font-semibold ${
-                      currentUser?.id == message.fromId && "self-end"
-                    }`}
-                  >
-                    {message.from.firstName}
-                  </h1>
-                  <div className="bg-blue-400 font-light rounded-2xl px-4 py-2">
-                    {message.contents.map((content: any) => (
-                      <div
-                        className="flex max-w-[300px] items-center m-[2px] rounded-md"
-                        key={content.id}
-                      >
-                        {content.type == "image" ? (
-                          <Image
-                            alt="media image"
-                            src={content.content}
-                            width={1000}
-                            height={1000}
-                            className="rounded-md object-fill"
-                          />
-                        ) : content.type == "video" ? (
-                          <video
-                            width="320"
-                            height="240"
-                            controls
-                            preload="none"
-                          >
-                            <source src={content.content} type="video/mp4" />
-                            Your browser does not support the video tag.
-                          </video>
-                        ) : content.type == "pdf" ? (
-                          <Link
-                            target="_blank"
-                            href={content.content}
-                            className="flex justify-center items-center w-full px-2 gap-x-1 h-[70px] bg-[#c61a0e] text-[#eee3e4] rounded-xl"
-                          >
-                            <File />
-                            {content.name}
-                          </Link>
-                        ) : content.type == "audio" ? (
-                          <audio controls src={content.content}></audio>
-                        ) : (
-                          <div className="text-lg text-white">
-                            {content.content}
-                          </div>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+          <GroupeMessages project={project} currentUser={currentUser} />
         </ScrollArea>
         <div className="px-6 pb-4 pt-2">
           <ChatInput userId={currentUser?.id} projectId={project.id} />
@@ -159,7 +90,7 @@ export default async function page({
                 src={project.teamLeader.imageUrl || "/avatar.png"}
                 height={"200"}
                 width={"200"}
-                className="h-16 w-16 rounded-xl"
+                className="h-16 w-16 rounded-full"
               />
               <h1 className="text-xl font-semibold">
                 {project.teamLeader.firstName}
@@ -180,7 +111,7 @@ export default async function page({
                   src={employee.imageUrl || "/avatar.png"}
                   height={"200"}
                   width={"200"}
-                  className="h-16 w-16 rounded-xl"
+                  className="h-16 w-16 rounded-full"
                 />
                 <h1 className="text-xl font-semibold">{employee.firstName}</h1>
               </div>

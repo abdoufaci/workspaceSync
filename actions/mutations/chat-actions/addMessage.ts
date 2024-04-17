@@ -2,6 +2,8 @@
 
 import { ProjectFormSchema } from "@/components/forms/ProjectForm";
 import { db } from "@/lib/db";
+import { pusherServer } from "@/lib/pusher";
+import { toPusherKey } from "@/lib/utils";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
@@ -30,5 +32,19 @@ export const addMessage = async ({
     })
   }
 
-  revalidatePath('/messages')
+  if(chatId) {
+    pusherServer.trigger(
+      toPusherKey(`chat:${chatId}`),
+      "incoming_message",
+      {}
+    )
+  } else {
+    pusherServer.trigger(
+      toPusherKey(`groupe:${projectId}`),
+      "incoming_message",
+      {}
+    )
+  }
+
+  //revalidatePath('/messages')
 };

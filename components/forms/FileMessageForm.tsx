@@ -13,13 +13,10 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { addMessage } from "@/actions/mutations/chat-actions/addMessage";
-import { UploadButton, UploadDropzone, uploadFiles } from "@/utils/uploadthing";
 
 import { useCallback, useState } from "react";
-import { File, Plus } from "lucide-react";
+import { File, Loader2 } from "lucide-react";
 import { useModal } from "@/hooks/use-modal-store";
-import { FileUpload } from "../FileUpload";
-import { DialogFooter } from "../ui/dialog";
 import { Button } from "../ui/button";
 
 import { useDropzone } from "@uploadthing/react";
@@ -37,6 +34,8 @@ const formSchema = z.object({
 });
 
 export default function FileMessageForm({ userId, projectId, chatId }: any) {
+  const { onClose } = useModal();
+  const [isLoading, setisLoading] = useState(false);
   const [files, setFiles] = useState<File[]>([]);
   const onDrop = useCallback((acceptedFiles: File[]) => {
     const urls = [];
@@ -56,14 +55,8 @@ export default function FileMessageForm({ userId, projectId, chatId }: any) {
   const { startUpload, permittedFileInfo } = useUploadThing(
     "fileMessageUploader",
     {
-      onClientUploadComplete: () => {
-        toast.success("uploaded successfully!");
-      },
       onUploadError: (e) => {
         toast.error(e.message);
-      },
-      onUploadBegin: () => {
-        alert("upload has begun");
       },
     }
   );
@@ -83,6 +76,7 @@ export default function FileMessageForm({ userId, projectId, chatId }: any) {
   });
 
   async function onSubmit(data: z.infer<typeof formSchema>) {
+    setisLoading(true);
     const res = await startUpload(files);
     const messageContents = [];
 
@@ -100,12 +94,17 @@ export default function FileMessageForm({ userId, projectId, chatId }: any) {
         });
       }
 
-      messageContents.push({
-        type: "text",
-        content: data.message,
-      });
+      if (data.message) {
+        messageContents.push({
+          type: "text",
+          content: data.message,
+        });
+      }
 
       await addMessage({ messageContents, fromId: userId, projectId, chatId });
+
+      onClose();
+      setisLoading(false);
     }
   }
 
@@ -205,10 +204,15 @@ export default function FileMessageForm({ userId, projectId, chatId }: any) {
             )}
           />
           <Button
+            disabled={isLoading}
             type="submit"
             className="bg-primary-blue hover:bg-primary-blue h-[50px] w-[100px] text-xl"
           >
-            Send
+            {isLoading ? (
+              <Loader2 className="h-6 w-6 animate-spin" />
+            ) : (
+              <p>Send</p>
+            )}
           </Button>
         </div>
       </form>
