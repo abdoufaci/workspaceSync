@@ -73,18 +73,14 @@ function TaskDetail({ card }: TaskDetailProps) {
         </div>
         <Separator className="my-3" />
         <div className="space-y-5">
-          <div
-            className={cn(
-              "flex flex-wrap gap-3",
-              card.assignedTo.length > 1 ? "items-start" : "items-center"
-            )}>
+          <div className="flex flex-wrap gap-3 items-center">
             <h1 className="text-gray-sub-300 text-sm whitespace-nowrap">
               Created By
             </h1>
             <div className="flex items-center gap-2 rounded-full p-1 border pr-2 ">
               <Image
                 alt="avatar"
-                src={card.creator.imageUrl || ""}
+                src={card.creator.imageUrl || "/avatar.png"}
                 height={100}
                 width={100}
                 className="w-7 h-7 rounded-full"
@@ -106,7 +102,7 @@ function TaskDetail({ card }: TaskDetailProps) {
               <div className="flex items-center gap-2 rounded-full p-1 border pr-2 ">
                 <Image
                   alt="avatar"
-                  src={employee.imageUrl || ""}
+                  src={employee.imageUrl || "/avatar.png"}
                   height={100}
                   width={100}
                   className="w-7 h-7 rounded-full"

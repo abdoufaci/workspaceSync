@@ -9,9 +9,15 @@ import { DragDropContext, Droppable } from "@hello-pangea/dnd";
 import ListContainer from "./_components/list-container";
 import { regroupedCards } from "@/groupedCards";
 import { getCurrentUser } from "@/actions/queries/getCurrentUser";
+import { redirect } from "next/navigation";
 
 async function Page() {
   const cards = await getCards();
+  const currentUser = await getCurrentUser();
+
+  if (currentUser?.role === "CLIENT") {
+    redirect("/projects");
+  }
 
   return (
     <ListContainer

@@ -163,6 +163,7 @@ export function AddTaskForm() {
               </Badge>
               {field.value.title.map(({ bgColor, title }) => (
                 <div
+                  key={title}
                   style={{
                     backgroundColor: bgColor,
                   }}
@@ -290,7 +291,9 @@ export function AddTaskForm() {
               </Popover>
               <div className="flex items-start flex-wrap gap-3 w-full !mt-0">
                 {field.value.map((item, idx) => (
-                  <div className="flex items-center justify-between p-0.5 px-2 w-full rounded max-w-40 bg-gray-200">
+                  <div
+                    key={idx}
+                    className="flex items-center justify-between p-0.5 px-2 w-full rounded max-w-40 bg-gray-200">
                     <h1>{item.title}</h1>
                     <X
                       onClick={() =>
@@ -330,7 +333,11 @@ export function AddTaskForm() {
               <FormLabel className="text-gray-sub-300">Task Image</FormLabel>
               <FormControl>
                 <div>
-                  <FileUpload value={field.value} onChange={field.onChange} />
+                  <FileUpload
+                    value={field.value}
+                    onChange={field.onChange}
+                    endpoint="imageUploader"
+                  />
                 </div>
               </FormControl>
               <FormMessage />
