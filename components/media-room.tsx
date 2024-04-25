@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { LiveKitRoom, VideoConference } from "@livekit/components-react";
 import "@livekit/components-styles";
+import { Loader2 } from "lucide-react";
 
 export default function MediaRoom({ chatId, currentUser }: any) {
   const [token, setToken] = useState(null);
@@ -19,7 +20,12 @@ export default function MediaRoom({ chatId, currentUser }: any) {
   }, []);
 
   if (!token) {
-    return <p>Loading...</p>;
+    return (
+      <div className="flex justify-center items-center h-full flex-col">
+        <Loader2 className="h-6 w-6 animate-spin" />
+        <p>Loading</p>
+      </div>
+    );
   }
 
   return (
