@@ -38,12 +38,14 @@ export const addMessage = async ({
       "incoming_message",
       {}
     )
+    console.log("triggered chatWebsocket");
   } else {
     pusherServer.trigger(
       toPusherKey(`groupe:${projectId}`),
       "incoming_message",
       {}
     )
+    console.log("triggered groupeWebsocket");
   }
 
   //revalidatePath('/messages')

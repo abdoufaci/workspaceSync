@@ -17,6 +17,7 @@ export default function GroupeMessages({ project, currentUser }: any) {
 
   useEffect(() => {
     pusherClient.subscribe(toPusherKey(`groupe:${project.id}`));
+    console.log("subsribed to groupeWebsocket");
 
     const messageHandler = () => {
       router.refresh();

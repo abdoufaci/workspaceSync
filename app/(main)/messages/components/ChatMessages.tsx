@@ -17,6 +17,7 @@ export default function ChatMessages({ chat, currentUser, chatPartner }: any) {
 
   useEffect(() => {
     pusherClient.subscribe(toPusherKey(`chat:${chat?.id}`));
+    console.log("subsribed to chatWebsocket");
 
     const messageHandler = () => {
       router.refresh();

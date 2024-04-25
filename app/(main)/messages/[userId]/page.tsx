@@ -7,9 +7,16 @@ import Link from "next/link";
 import ChatInput from "../components/ChatInput";
 import { revalidatePath } from "next/cache";
 import ChatMessages from "../components/ChatMessages";
-import { pusherClient, pusherServer } from "@/lib/pusher";
+import MediaRoom from "@/components/media-room";
+import ChatVideoButton from "../components/ChatVideoButton";
 
-export default async function page({ params }: { params: { userId: string } }) {
+export default async function page({
+  params,
+  searchParams,
+}: {
+  params: { userId: string };
+  searchParams: { video?: boolean };
+}) {
   const currentUser = await getCurrentUser();
 
   let chat: any = await db.chat.findFirst({
@@ -72,26 +79,37 @@ export default async function page({ params }: { params: { userId: string } }) {
   return (
     <div className="flex h-full">
       <div className="flex flex-col h-full w-2/3">
-        <div className="w-full p-3 flex gap-x-4 border-b items-center">
-          <Image
-            alt="logo"
-            src={chatPartner?.imageUrl || "/avatar.png"}
-            height={"200"}
-            width={"200"}
-            className="h-16 w-16 rounded-full"
-          />
-          <h1 className="text-2xl font-semibold">{chatPartner?.firstName}</h1>
+        <div className="w-full p-3 flex gap-x-4 border-b justify-between items-center">
+          <div className="flex gap-x-4 items-center">
+            <Image
+              alt="logo"
+              src={chatPartner?.imageUrl || "/avatar.png"}
+              height={"200"}
+              width={"200"}
+              className="h-16 w-16 rounded-full"
+            />
+            <h1 className="text-2xl font-semibold">{chatPartner?.firstName}</h1>
+          </div>
+          <div>
+            <ChatVideoButton />
+          </div>
         </div>
-        <ScrollArea className="flex-1">
-          <ChatMessages
-            chat={chat}
-            currentUser={currentUser}
-            chatPartner={chatPartner}
-          />
-        </ScrollArea>
-        <div className="px-6 pb-4 pt-2">
-          <ChatInput userId={currentUser?.id} chatId={chat?.id} />
-        </div>
+        {searchParams.video ? (
+          <MediaRoom chatId={chat.id} currentUser={currentUser}></MediaRoom>
+        ) : (
+          <>
+            <ScrollArea className="flex-1">
+              <ChatMessages
+                chat={chat}
+                currentUser={currentUser}
+                chatPartner={chatPartner}
+              />
+            </ScrollArea>
+            <div className="px-6 pb-4 pt-2">
+              <ChatInput userId={currentUser?.id} chatId={chat?.id} />
+            </div>
+          </>
+        )}
       </div>
       <div className="h-full w-1/3 border-l p-4 flex flex-col gap-y-2"></div>
     </div>
