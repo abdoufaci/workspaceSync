@@ -39,6 +39,9 @@ interface ModalData {
     };
   };
   currentUserId?: string;
+  userId?: string;
+  projectId?: string;
+  chatId?: string;
 }
 
 interface ModalStore {

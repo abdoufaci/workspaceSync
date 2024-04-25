@@ -20,6 +20,8 @@ import { Loader2, Mic, Paperclip, SendHorizontal, Trash } from "lucide-react";
 import { useModal } from "@/hooks/use-modal-store";
 import { useAudioRecorder } from "react-audio-voice-recorder";
 import { useEffect, useState } from "react";
+import { profanityCheck } from "@/actions/mutations/chat-actions/profanityCheck";
+import { toast } from "sonner";
 
 const formSchema = z.object({
   message: z.string(),
@@ -47,6 +49,15 @@ export default function ChatInput({ userId, projectId, chatId }: any) {
 
   async function onSubmit({ message }: z.infer<typeof formSchema>) {
     setIsLoading(true);
+
+    const messageverified = await profanityCheck({ message });
+
+    if (messageverified.isProfanity || messageverified.score > 0.7) {
+      toast.warning("profanity is HARAM.");
+      setIsLoading(false);
+      form.resetField("message");
+      return;
+    }
 
     await addMessage({
       messageContents: [
