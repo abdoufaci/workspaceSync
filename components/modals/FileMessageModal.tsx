@@ -16,9 +16,9 @@ export const FileMessageModal = () => {
 
   return (
     <Dialog open={isModalOpen} onOpenChange={onClose}>
-      <DialogContent className="text-black gap-y-0 w-[800px]">
+      <DialogContent className="text-black gap-y-0 w-[400px] p-4">
         <DialogHeader>
-          <DialogTitle className="pl-6 py-2 text-xl text-center font-bold">
+          <DialogTitle className="text-lg text-center font-semibold">
             File Message Modal
           </DialogTitle>
         </DialogHeader>

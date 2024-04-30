@@ -79,18 +79,18 @@ export default async function page({
   return (
     <div className="flex h-full">
       <div className="flex flex-col h-full w-2/3">
-        <div className="w-full p-3 flex gap-x-4 border-b justify-between items-center">
-          <div className="flex gap-x-4 items-center">
+        <div className="w-full p-2 flex border-b justify-between items-center">
+          <div className="flex gap-x-2 items-center">
             <Image
               alt="logo"
               src={chatPartner?.imageUrl || "/avatar.png"}
               height={"200"}
               width={"200"}
-              className="h-16 w-16 rounded-full"
+              className="h-12 w-12 rounded-full"
             />
-            <h1 className="text-2xl font-semibold">{chatPartner?.firstName}</h1>
+            <h1 className="text-xl font-semibold">{chatPartner?.firstName}</h1>
           </div>
-          <div>
+          <div className="pr-2">
             <ChatVideoButton />
           </div>
         </div>

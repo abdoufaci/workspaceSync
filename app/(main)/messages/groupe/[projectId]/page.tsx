@@ -8,6 +8,7 @@ import { File } from "lucide-react";
 import GroupeMessages from "../../components/GroupeMessages";
 import MediaRoom from "@/components/media-room";
 import ChatVideoButton from "../../components/ChatVideoButton";
+import UserChatCard from "../../components/UserChatCard";
 
 export default async function page({
   params,
@@ -64,18 +65,18 @@ export default async function page({
   return (
     <div className="flex h-full">
       <div className="flex flex-col h-full w-2/3">
-        <div className="w-full p-3 flex gap-x-4 border-b justify-between items-center">
-          <div className="flex gap-x-4 items-center">
+        <div className="w-full p-2 flex border-b justify-between items-center">
+          <div className="flex gap-x-2 items-center">
             <Image
               alt="logo"
               src={project.imageUrl || "/avatar.png"}
               height={"200"}
               width={"200"}
-              className="h-16 w-16 rounded-xl"
+              className="h-12 w-12 rounded-xl"
             />
-            <h1 className="text-2xl font-semibold">{project.title}</h1>
+            <h1 className="text-xl font-semibold">{project.title}</h1>
           </div>
-          <div>
+          <div className="pr-2">
             <ChatVideoButton />
           </div>
         </div>
@@ -94,42 +95,16 @@ export default async function page({
       </div>
       <div className="h-full w-1/3 border-l p-4 flex flex-col gap-y-2">
         <div>
-          <h1 className="text-xl font-semibold">Team Leader</h1>
+          <h1 className="text-lg font-semibold">Team Leader</h1>
           <Link href={`/messages/${project.teamLeader.id}`}>
-            <div
-              className={`flex p-3 rounded-xl gap-y-2 items-center gap-x-2 hover:bg-gray-sub-100
-          }`}
-            >
-              <Image
-                alt="logo"
-                src={project.teamLeader.imageUrl || "/avatar.png"}
-                height={"200"}
-                width={"200"}
-                className="h-16 w-16 rounded-full"
-              />
-              <h1 className="text-xl font-semibold">
-                {project.teamLeader.firstName}
-              </h1>
-            </div>
+            <UserChatCard otherUser={project.teamLeader} />
           </Link>
         </div>
         <div>
-          <h1 className="text-xl font-semibold">Team Members</h1>
+          <h1 className="text-lg font-semibold">Team Members</h1>
           {project.assignedTo.map((employee) => (
             <Link key={employee.id} href={`/messages/${employee.id}`}>
-              <div
-                className={`flex p-3 rounded-xl gap-y-2 items-center gap-x-2 hover:bg-gray-sub-100
-              }`}
-              >
-                <Image
-                  alt="logo"
-                  src={employee.imageUrl || "/avatar.png"}
-                  height={"200"}
-                  width={"200"}
-                  className="h-16 w-16 rounded-full"
-                />
-                <h1 className="text-xl font-semibold">{employee.firstName}</h1>
-              </div>
+              <UserChatCard otherUser={employee} />
             </Link>
           ))}
         </div>

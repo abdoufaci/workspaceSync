@@ -8,7 +8,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import UserChatCard from "./UserChatCard";
 import ProjectCard from "./ProjectCard";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Loader2 } from "lucide-react";
 
 export default function ChatSearch({ chats, projects }: any) {
   const [employees, setEmployees] = useState<any[]>([]);
@@ -40,29 +40,31 @@ export default function ChatSearch({ chats, projects }: any) {
 
   return (
     <div className="flex flex-col gap-y-2">
-      <div className="flex gap-x-2 items-center">
+      <div className="flex gap-x-1 justify-center items-center">
         {searchMode && (
           <ArrowLeft
-            className="rounded-full hover:bg-gray-sub-100 w-[35px] h-[35px] p-[6px]"
+            className="rounded-full hover:cursor-pointer hover:bg-gray-sub-100 w-[28px] h-[28px] p-[4px]"
             onClick={closeAndClear}
           />
         )}
         <Input
           onFocus={() => setSearchMode(true)}
-          className="w-[calc(100%-16px)]"
+          className="w-[calc(100%)]"
           placeholder="Search for employees..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
       </div>
-      <ScrollArea className="h-full pr-3">
+      <ScrollArea className="h-full px-2">
         {searchMode ? (
           isSearching ? (
-            <p>Searching...</p>
+            <p className="p-2 text-sm text-neutral-400">Searching...</p>
           ) : employees?.length === 0 ? (
-            <div className="mt-4 text-neutral-400">No employees found.</div>
+            <div className="p-2 text-sm text-neutral-600">
+              No employees found.
+            </div>
           ) : (
-            <div className="flex flex-col gap-y-2">
+            <div>
               {employees?.map((employee) => (
                 <Link key={employee.id} href={`/messages/${employee.id}`}>
                   <UserChatCard otherUser={employee} />

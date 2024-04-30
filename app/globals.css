@@ -69,6 +69,11 @@ body{
     --ring: 0 0% 83.1%;
   }
 }
+
+dialog:modal {
+  max-width: 100vw;
+  max-height: 100vh;
+}
  
 @layer base {
   * {

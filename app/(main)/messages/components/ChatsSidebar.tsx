@@ -57,7 +57,7 @@ export default async function ChatsSidebar() {
   const { projects, chats } = data;
 
   return (
-    <div className="flex flex-col p-2">
+    <div className="flex flex-col p-1">
       <ChatSearch
         chats={chats}
         projects={data.role == "MANAGER" ? allProjects : projects}

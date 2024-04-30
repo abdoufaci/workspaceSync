@@ -52,7 +52,8 @@ export default function ChatInput({ userId, projectId, chatId }: any) {
 
     const messageverified = await profanityCheck({ message });
 
-    if (messageverified.isProfanity || messageverified.score > 0.7) {
+    if (messageverified.isProfanity || messageverified.score > 0.9) {
+      //bdeltha psq mahbtch taccepti 7eta message
       toast.warning("profanity is HARAM.");
       setIsLoading(false);
       form.resetField("message");
@@ -115,9 +116,9 @@ export default function ChatInput({ userId, projectId, chatId }: any) {
           control={form.control}
           name="message"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="flex justify-center items-center">
               <FormControl>
-                <div className="flex items-center gap-x-2">
+                <div className="flex items-center justify-center gap-x-2 w-[90%]">
                   <div className="flex items-center gap-x-1 rounded-xl bg-gray-200 border px-4 w-full">
                     <EmojiPicker
                       onChange={(emoji: string) =>
@@ -126,7 +127,7 @@ export default function ChatInput({ userId, projectId, chatId }: any) {
                     />
                     <Input
                       disabled={isLoading}
-                      className="h-[50px] bg-transparent border-0 py-6 text-lg"
+                      className="h-[50px] bg-transparent border-0 py-6"
                       placeholder="Write your message..."
                       {...field}
                     />
@@ -173,7 +174,7 @@ export default function ChatInput({ userId, projectId, chatId }: any) {
                               </div>
                               <SendHorizontal
                                 role="button"
-                                className="text-white bg-primary-blue rounded-full w-[40px] h-[40px] p-[8px]"
+                                className="text-white bg-primary-blue rounded-full w-[44px] h-[40px] p-[8px]"
                                 onClick={addAudioElement}
                               />
                             </>

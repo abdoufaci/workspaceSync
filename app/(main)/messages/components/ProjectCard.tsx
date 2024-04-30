@@ -8,7 +8,7 @@ export default function ProjectCard({ project }: any) {
 
   return (
     <div
-      className={`flex p-3 rounded-xl gap-y-2 items-center gap-x-2 hover:bg-gray-sub-100 ${
+      className={`flex p-2 rounded-xl items-center gap-x-2 hover:bg-gray-sub-100 ${
         params.projectId == project.id && "bg-gray-200"
       }`}
     >
@@ -17,9 +17,9 @@ export default function ProjectCard({ project }: any) {
         src={project.imageUrl || "/avatar.png"}
         height={"200"}
         width={"200"}
-        className="h-16 w-16 rounded-xl"
+        className="h-12 w-12 rounded-xl"
       />
-      <h1 className="text-xl font-semibold">{project.title}</h1>
+      <h1 className="text-sm font-semibold">{project.title}</h1>
     </div>
   );
 }

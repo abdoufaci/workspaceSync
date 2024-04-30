@@ -27,6 +27,8 @@ import Image from "next/image";
 import { ScrollArea } from "../ui/scroll-area";
 import { toast } from "sonner";
 import Link from "next/link";
+import VideoPlayer from "@/app/(main)/messages/components/VideoPlayer";
+import FileMessage from "@/app/(main)/messages/components/FileMessage";
 
 const formSchema = z.object({
   files: z.array(z.any()),
@@ -120,15 +122,15 @@ export default function FileMessageForm({ userId, projectId, chatId }: any) {
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <div className="flex flex-col gap-y-2 bg-gray-sub-100 p-2 rounded-lg">
-                  <ScrollArea className="h-[300px]">
+                <div className="flex flex-col gap-y-2 bg-gray-200 p-2 rounded-lg">
+                  <ScrollArea className="h-[260px]">
                     {field.value.length == 0 ? (
                       <div
                         {...getRootProps()}
-                        className="flex justify-center items-center h-[300px]"
+                        className="flex justify-center items-center h-[260px]"
                       >
                         <input {...getInputProps()} />
-                        <div className="p-2 text-white text-lg bg-primary-blue rounded-xl w-fit hover:cursor-pointer">
+                        <div className="p-2 rounded-lg text-white bg-primary-blue hover:bg-primary-blue hover:cursor-pointer">
                           Choose File(s)
                         </div>
                       </div>
@@ -136,7 +138,7 @@ export default function FileMessageForm({ userId, projectId, chatId }: any) {
                       <div className="flex flex-wrap">
                         {field.value.map((file: any) => (
                           <div
-                            className="flex bg-gray-200 border w-[300px] items-center m-[2px] rounded-md"
+                            className="flex w-[300px] items-center m-[2px] rounded-md"
                             key={file.url}
                           >
                             {file.type == "image/jpeg" ? (
@@ -145,27 +147,15 @@ export default function FileMessageForm({ userId, projectId, chatId }: any) {
                                 src={file.url}
                                 width={1000}
                                 height={1000}
-                                className="rounded-md object-fill"
+                                className="rounded-2xl w-[40vh] object-cover"
                               />
                             ) : file.type == "video/mp4" ? (
-                              <video
-                                width="320"
-                                height="240"
-                                controls
-                                preload="none"
-                              >
-                                <source src={file.url} type="video/mp4" />
-                                Your browser does not support the video tag.
-                              </video>
+                              <VideoPlayer content={file.url} />
                             ) : (
-                              <Link
-                                target="_blank"
-                                href={file.url}
-                                className="flex justify-center items-center w-full gap-x-1 h-[70px] bg-[#c61a0e] text-[#eee3e4] rounded-xl"
-                              >
-                                <File />
-                                {file.name}
-                              </Link>
+                              <FileMessage
+                                content={file.url}
+                                name={file.name}
+                              />
                             )}
                           </div>
                         ))}
@@ -175,7 +165,7 @@ export default function FileMessageForm({ userId, projectId, chatId }: any) {
                   {field.value.length > 0 && (
                     <div {...getRootProps()} className="flex justify-center">
                       <input {...getInputProps()} />
-                      <div className="p-3 text-white text-lg bg-primary-blue rounded-xl w-fit hover:cursor-pointer">
+                      <div className="p-2 rounded-lg text-white bg-primary-blue hover:bg-primary-blue hover:cursor-pointer">
                         Add Files
                       </div>
                     </div>
@@ -186,7 +176,7 @@ export default function FileMessageForm({ userId, projectId, chatId }: any) {
             </FormItem>
           )}
         />
-        <div className="flex gap-x-2">
+        <div className="flex gap-x-1 items-center">
           <FormField
             control={form.control}
             name="message"
@@ -194,7 +184,7 @@ export default function FileMessageForm({ userId, projectId, chatId }: any) {
               <FormItem className="w-full">
                 <FormControl>
                   <Input
-                    className="h-[50px] border-0 py-6 text-lg"
+                    className="border-0"
                     placeholder="Add a caption..."
                     {...field}
                   />
@@ -206,7 +196,7 @@ export default function FileMessageForm({ userId, projectId, chatId }: any) {
           <Button
             disabled={isLoading}
             type="submit"
-            className="bg-primary-blue hover:bg-primary-blue h-[50px] w-[100px] text-xl"
+            className="bg-primary-blue hover:bg-primary-blue h-[34px]"
           >
             {isLoading ? (
               <Loader2 className="h-6 w-6 animate-spin" />
