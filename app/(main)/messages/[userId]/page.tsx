@@ -9,6 +9,7 @@ import { revalidatePath } from "next/cache";
 import ChatMessages from "../components/ChatMessages";
 import MediaRoom from "@/components/media-room";
 import ChatVideoButton from "../components/ChatVideoButton";
+import { redirect } from "next/navigation";
 
 export default async function page({
   params,
@@ -46,31 +47,34 @@ export default async function page({
   });
 
   if (!chat) {
-    chat = await db.chat.create({
-      data: {
-        users: {
-          connect: [{ id: currentUser?.id }, { id: params.userId }],
-        },
-      },
-      include: {
-        users: {
-          select: {
-            id: true,
-            firstName: true,
-            lastName: true,
-            username: true,
-            imageUrl: true,
+    if (currentUser?.role == "CLIENT") redirect("/messages");
+    else {
+      chat = await db.chat.create({
+        data: {
+          users: {
+            connect: [{ id: currentUser?.id }, { id: params.userId }],
           },
         },
-        messages: {
-          include: {
-            contents: true,
+        include: {
+          users: {
+            select: {
+              id: true,
+              firstName: true,
+              lastName: true,
+              username: true,
+              imageUrl: true,
+            },
+          },
+          messages: {
+            include: {
+              contents: true,
+            },
           },
         },
-      },
-    });
+      });
 
-    revalidatePath("/messages");
+      revalidatePath("/messages");
+    }
   }
 
   const chatPartner =

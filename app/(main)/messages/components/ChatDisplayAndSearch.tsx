@@ -9,8 +9,13 @@ import { useEffect, useState } from "react";
 import UserChatCard from "./UserChatCard";
 import ProjectCard from "./ProjectCard";
 import { ArrowLeft, Loader2 } from "lucide-react";
+import { getMembers } from "@/actions/mutations/user-actions/getMembers";
 
-export default function ChatSearch({ chats, projects }: any) {
+export default function ChatDisplayAndSearch({
+  currentUser,
+  chats,
+  projects,
+}: any) {
   const [employees, setEmployees] = useState<any[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [isSearching, setIsSearching] = useState(false);
@@ -21,8 +26,9 @@ export default function ChatSearch({ chats, projects }: any) {
     const fetchUsers = async () => {
       setEmployees([]);
       setIsSearching(true);
-      const employees = await getMembersByUsername({
-        role: "EMPLOYEE",
+      const employees = await getMembers({
+        userId: currentUser.id,
+        userRole: currentUser.role,
         debouncedSearchTerm,
       });
       setIsSearching(false);
@@ -40,21 +46,23 @@ export default function ChatSearch({ chats, projects }: any) {
 
   return (
     <div className="flex flex-col gap-y-2">
-      <div className="flex gap-x-1 justify-center items-center">
-        {searchMode && (
-          <ArrowLeft
-            className="rounded-full hover:cursor-pointer hover:bg-gray-sub-100 w-[28px] h-[28px] p-[4px]"
-            onClick={closeAndClear}
+      {currentUser.role != "CLIENT" && (
+        <div className="flex gap-x-1 justify-center items-center">
+          {searchMode && (
+            <ArrowLeft
+              className="rounded-full hover:cursor-pointer hover:bg-gray-sub-100 w-[28px] h-[28px] p-[4px]"
+              onClick={closeAndClear}
+            />
+          )}
+          <Input
+            onFocus={() => setSearchMode(true)}
+            className="w-[calc(100%)]"
+            placeholder="Search for employees..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
           />
-        )}
-        <Input
-          onFocus={() => setSearchMode(true)}
-          className="w-[calc(100%)]"
-          placeholder="Search for employees..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-      </div>
+        </div>
+      )}
       <ScrollArea className="h-full px-2">
         {searchMode ? (
           isSearching ? (
@@ -80,11 +88,8 @@ export default function ChatSearch({ chats, projects }: any) {
               </Link>
             ))}
             {chats.map((chat: any) => (
-              <Link
-                key={chat.users[0].id}
-                href={`/messages/${chat.users[0].id}`}
-              >
-                <UserChatCard otherUser={chat.users[0]} />
+              <Link key={chat.id} href={`/messages/${chat.id}`}>
+                <UserChatCard otherUser={chat} />
               </Link>
             ))}
           </div>

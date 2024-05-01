@@ -1,5 +1,6 @@
 "use client";
 
+import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 
@@ -19,7 +20,12 @@ export default function UserChatCard({ otherUser }: any) {
         width={"200"}
         className="h-12 w-12 rounded-full"
       />
-      <h1 className="text-sm font-semibold">{otherUser.firstName}</h1>
+      <div>
+        <h1 className="text-sm font-semibold">{otherUser.firstName}</h1>
+        {otherUser.role == "MANAGER" && (
+          <Badge className="bg-[#ffbf00] hover:bg-[#ffbf00]">Manager</Badge>
+        )}
+      </div>
     </div>
   );
 }

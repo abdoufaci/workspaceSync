@@ -8,13 +8,15 @@ import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 import { AnimatedTooltip } from "@/components/ui/animated-tooltip";
 import { formatDistanceToNow } from "date-fns";
+import { getCurrentUser } from "@/actions/queries/getCurrentUser";
 
 export default async function Page() {
+  const currentUser = await getCurrentUser();
   const projects = await getProjects();
 
   return (
     <div className="min-h-[calc(100vh-81px)] w-full p-10 bg-gray-sub-100">
-      <ProjectsPageHeader />
+      <ProjectsPageHeader currentUser={currentUser} />
       <div className="flex flex-row gap-x-4 gap-y-6 flex-wrap mt-4">
         {projects.length == 0 && "no projects found"}
         {projects.map((project) => {
