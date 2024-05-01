@@ -102,7 +102,7 @@ export const HeroParallax = ({
 export const Header = () => {
   return (
     <div className="max-w-7xl relative mx-auto py-20 md:py-40 px-4 w-full  left-0 top-0">
-      <h1 className="text-2xl md:text-6xl font-bold dark:text-white">
+      <div className="text-2xl md:text-6xl font-bold dark:text-white">
         Transform Your{" "}
         <h1 className="bg-gradient-to-r from-[#2684FF]  via-[#41BDF2] to-[#299EB8] inline-block text-transparent bg-clip-text">
           Team's Productivity
@@ -110,7 +110,7 @@ export const Header = () => {
         and
         <br />
         Collaboration
-      </h1>
+      </div>
       <p className="max-w-2xl text-base md:text-xl mt-8 dark:text-neutral-200">
         Your all-in-one solution for efficient project management and seamless
         collaboration. Empower your team to work smarter with streamlined
