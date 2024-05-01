@@ -17,6 +17,7 @@ export const inviteUser = async ({
         email,
         //@ts-ignore
         role: role === "CLIENT" ? Role.CLIENT : Role.EMPLOYEE,
+        activated: role === "CLIENT" ? true : false,
       },
     });
   } catch (error) {

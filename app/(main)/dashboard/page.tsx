@@ -16,7 +16,7 @@ async function Page() {
   const currentUser = await getCurrentUser();
 
   if (currentUser?.role === "CLIENT") {
-    redirect("/projects");
+    redirect("/my-projects");
   }
 
   return (

@@ -20,7 +20,11 @@ export default async function Home() {
     });
 
     if (user?.activated) {
-      redirect("/dashboard");
+      if (user?.role === "CLIENT") {
+        redirect("/my-projects");
+      } else {
+        redirect("/dashboard");
+      }
     } else {
       redirect("/onboarding");
     }
