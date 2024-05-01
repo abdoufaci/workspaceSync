@@ -4,8 +4,7 @@ import { Macbook } from "@/components/home/macbook";
 import NavBar from "@/components/home/nav-bar";
 import { Button } from "@/components/ui/button";
 import { db } from "@/lib/db";
-import { SignInButton, SignUpButton, currentUser } from "@clerk/nextjs";
-import { Role } from "@prisma/client";
+import { currentUser } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 
 export default async function Home() {
