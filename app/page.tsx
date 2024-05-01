@@ -1,3 +1,7 @@
+import Banner from "@/components/home/banner";
+import { HeroParallaxAni } from "@/components/home/hero-parallax";
+import { Macbook } from "@/components/home/macbook";
+import NavBar from "@/components/home/nav-bar";
 import { Button } from "@/components/ui/button";
 import { db } from "@/lib/db";
 import { SignInButton, SignUpButton, currentUser } from "@clerk/nextjs";
@@ -23,14 +27,13 @@ export default async function Home() {
   }
 
   return (
-    <div className="flex gap-x-2 p-2">
-      workSyncPro
-      <Button>
-        <SignInButton />
-      </Button>
-      <Button>
-        <SignUpButton />
-      </Button>
+    <div className="w-full">
+      <NavBar />
+      <Banner />
+      <div className="-mt-72 pointer-events-none">
+        <Macbook />
+      </div>
+      <HeroParallaxAni />
     </div>
   );
 }
