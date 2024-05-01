@@ -44,6 +44,9 @@ export default async function page({
         },
       },
       messages: {
+        where: {
+          withClient: false,
+        },
         include: {
           from: {
             select: {
@@ -88,7 +91,11 @@ export default async function page({
               <GroupeMessages project={project} currentUser={currentUser} />
             </ScrollArea>
             <div className="px-6 pb-4 pt-2">
-              <ChatInput userId={currentUser?.id} projectId={project.id} />
+              <ChatInput
+                userId={currentUser?.id}
+                projectId={project.id}
+                withClient={false}
+              />
             </div>
           </>
         )}

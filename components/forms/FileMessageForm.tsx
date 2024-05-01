@@ -35,7 +35,12 @@ const formSchema = z.object({
   message: z.string().optional(),
 });
 
-export default function FileMessageForm({ userId, projectId, chatId }: any) {
+export default function FileMessageForm({
+  userId,
+  projectId,
+  chatId,
+  withClient,
+}: any) {
   const { onClose } = useModal();
   const [isLoading, setisLoading] = useState(false);
   const [files, setFiles] = useState<File[]>([]);
@@ -103,7 +108,13 @@ export default function FileMessageForm({ userId, projectId, chatId }: any) {
         });
       }
 
-      await addMessage({ messageContents, fromId: userId, projectId, chatId });
+      await addMessage({
+        messageContents,
+        fromId: userId,
+        projectId,
+        chatId,
+        withClient,
+      });
 
       onClose();
       setisLoading(false);

@@ -27,9 +27,17 @@ export default function ChatVideoButton() {
   return (
     <>
       {isVideo ? (
-        <VideoOff className="w-6 h-6" role="button" onClick={onClick} />
+        <VideoOff
+          className="w-6 h-6 text-black/70"
+          role="button"
+          onClick={onClick}
+        />
       ) : (
-        <Video className="w-6 h-6" role="button" onClick={onClick} />
+        <Video
+          className="w-6 h-6 text-black/70"
+          role="button"
+          onClick={onClick}
+        />
       )}
     </>
   );

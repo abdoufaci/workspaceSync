@@ -7,8 +7,8 @@ export default function ProjectsPageHeader() {
   const { onOpen } = useModal();
 
   return (
-    <div className="flex items-center gap-x-4">
-      <h1 className="text-4xl font-semibold text-[#191919]">Projects</h1>
+    <div className="flex items-center gap-x-3">
+      <h1 className="text-3xl font-semibold text-[#191919]">Projects</h1>
       <CircleFadingPlus
         role="button"
         color="#1778ff"
@@ -16,7 +16,7 @@ export default function ProjectsPageHeader() {
         style={{
           backgroundColor: "#E7F1F8",
         }}
-        className="rounded-full"
+        className="rounded-full mt-[2px]"
         onClick={() => onOpen("projectModal")}
       />
     </div>

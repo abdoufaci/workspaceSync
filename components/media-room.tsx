@@ -30,6 +30,7 @@ export default function MediaRoom({ chatId, currentUser }: any) {
 
   return (
     <LiveKitRoom
+      className="w-full h-full"
       data-lk-theme="default"
       serverUrl={process.env.NEXT_PUBLIC_LIVEKIT_URL}
       connect={true}

@@ -42,6 +42,7 @@ interface ModalData {
   userId?: string;
   projectId?: string;
   chatId?: string;
+  withClient?: boolean;
 }
 
 interface ModalStore {

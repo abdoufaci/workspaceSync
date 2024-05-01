@@ -27,7 +27,12 @@ const formSchema = z.object({
   message: z.string(),
 });
 
-export default function ChatInput({ userId, projectId, chatId }: any) {
+export default function ChatInput({
+  userId,
+  projectId,
+  chatId,
+  withClient,
+}: any) {
   const [uploadAudio, setUploadAudio] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const {
@@ -70,6 +75,7 @@ export default function ChatInput({ userId, projectId, chatId }: any) {
       fromId: userId,
       projectId,
       chatId,
+      withClient,
     });
 
     setIsLoading(false);
@@ -101,6 +107,7 @@ export default function ChatInput({ userId, projectId, chatId }: any) {
           fromId: userId,
           projectId,
           chatId,
+          withClient,
         });
         setIsLoading(false);
       };
@@ -139,6 +146,7 @@ export default function ChatInput({ userId, projectId, chatId }: any) {
                             userId,
                             projectId,
                             chatId,
+                            withClient,
                           })
                         }
                         className="text-zinc-500 dark:text-zinc-400 hover:text-zinc-600 w-[30px] h-[30px] transition"

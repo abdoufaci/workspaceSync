@@ -115,6 +115,8 @@ model Message {
   projectId String?
   project   Project? @relation(fields: [projectId], references: [id], onDelete: Cascade)
 
+  withClient Boolean? @default(false)
+
   chatId String?
   chat   Chat?   @relation(fields: [chatId], references: [id], onDelete: Cascade)
 

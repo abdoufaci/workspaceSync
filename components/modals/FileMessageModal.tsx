@@ -26,6 +26,7 @@ export const FileMessageModal = () => {
           userId={data.userId}
           projectId={data.projectId}
           chatId={data.chatId}
+          withClient={data.withClient}
         />
       </DialogContent>
     </Dialog>

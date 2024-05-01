@@ -13,7 +13,7 @@ export default async function Page() {
   const projects = await getProjects();
 
   return (
-    <div className="min-h-[calc(100vh-81px)] w-full p-6 bg-gray-sub-100">
+    <div className="min-h-[calc(100vh-81px)] w-full p-10 bg-gray-sub-100">
       <ProjectsPageHeader />
       <div className="flex flex-row gap-x-4 gap-y-6 flex-wrap mt-4">
         {projects.length == 0 && "no projects found"}
@@ -35,7 +35,7 @@ export default async function Page() {
               href={`my-projects/${project.id}`}
               className="w-[32.3%]"
             >
-              <div className="flex flex-col gap-y-4 px-6 py-10 bg-white rounded-xl w-full">
+              <div className="flex flex-col gap-y-2 px-4 py-6 bg-white rounded-xl w-full">
                 <div className="flex items-center gap-x-2 justify-between">
                   <div className="flex items-center gap-x-3">
                     <Image
@@ -43,15 +43,17 @@ export default async function Page() {
                       src={project.imageUrl || "/avatar.png"}
                       height={100}
                       width={100}
-                      className="h-24 w-24 rounded-xl object-cover"
+                      className="h-[72px] w-[72px] rounded-xl object-cover"
                     />
-                    <div>
+                    <div className="flex flex-col gap-y-2">
                       {project.to && (
-                        <p className="font-light text-sm">
+                        <p className="text-xs">
                           {formatDistanceToNow(new Date(project.to))} left
                         </p>
                       )}
-                      <h1 className="font-bold text-3xl">{project.title}</h1>
+                      <h1 className="font-semibold text-2xl">
+                        {project.title}
+                      </h1>
                     </div>
                   </div>
                   <Badge
@@ -62,7 +64,7 @@ export default async function Page() {
                     {project.stat}
                   </Badge>
                 </div>
-                <p className="text-sm font-extralight leading-tight">
+                <p className="text-sm font-light leading-tight">
                   {project.description}
                 </p>
                 <div>

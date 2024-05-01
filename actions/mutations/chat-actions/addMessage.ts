@@ -11,13 +11,15 @@ export const addMessage = async ({
   messageContents,
   fromId,
   projectId,
-  chatId
+  chatId,
+  withClient
 }: any) => {
   const newMessage = await db.message.create({
     data: {
       fromId,
       projectId,
       chatId,
+      withClient
     },
   })
 

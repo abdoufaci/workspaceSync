@@ -44,7 +44,7 @@ export default function GroupeMessages({ project, currentUser }: any) {
       {project.messages.map((message: any) => (
         <div
           key={message.id}
-          className={`flex px-4 py-2 gap-x-2 w-full ${
+          className={`flex px-4 py-1 gap-x-2 w-full ${
             currentUser?.id == message.fromId && "self-end flex-row-reverse"
           }`}
         >

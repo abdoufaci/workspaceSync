@@ -25,7 +25,7 @@ export const ProjectModal = () => {
             {project ? "Edit Project" : "Add Project"}
           </DialogTitle>
         </DialogHeader>
-        <ScrollArea className="h-[600px] w-full rounded-md pr-4">
+        <ScrollArea className="h-[70vh] w-full rounded-md pr-4">
           <ProjectForm defaultValues={project} />
         </ScrollArea>
       </DialogContent>

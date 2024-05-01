@@ -1,6 +1,6 @@
 import { db } from "@/lib/db";
 
-export const getProjectById = async ({ id }: { id: string}) => {
+export const getProjectById = async ({ id, withClient }: { id: string, withClient: boolean}) => {
   try{
     const project = await db.project.findFirst({
       where: {
@@ -45,6 +45,23 @@ export const getProjectById = async ({ id }: { id: string}) => {
           username: true,
           employeeRole: true
         }
+      },
+      messages: {
+        where: {
+          withClient
+        },
+        include: {
+          from: {
+            select: {
+              id: true,
+              firstName: true,
+              lastName: true,
+              username: true,
+              imageUrl: true,
+            },
+          },
+          contents: true,
+        },
       },
     },
   })
