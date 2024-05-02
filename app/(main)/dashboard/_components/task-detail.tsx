@@ -99,7 +99,9 @@ function TaskDetail({ card }: TaskDetailProps) {
               Assigned to
             </h1>
             {card.assignedTo.map((employee) => (
-              <div className="flex items-center gap-2 rounded-full p-1 border pr-2 ">
+              <div
+                key={employee.email}
+                className="flex items-center gap-2 rounded-full p-1 border pr-2 ">
                 <Image
                   alt="avatar"
                   src={employee.imageUrl || "/avatar.png"}
@@ -131,6 +133,7 @@ function TaskDetail({ card }: TaskDetailProps) {
                   //@ts-ignore
                   card.links?.map((link: any) => (
                     <Link
+                      key={link.link}
                       href={link.link}
                       className="underline"
                       target="_blank">
@@ -183,7 +186,9 @@ function TaskDetail({ card }: TaskDetailProps) {
               {card.labels &&
                 //@ts-ignore
                 card.labels.map((label) => (
-                  <div className="w-full p-4 rounded-md bg-[#1B72F30D] flex items-center justify-between">
+                  <div
+                    key={label.title}
+                    className="w-full p-4 rounded-md bg-[#1B72F30D] flex items-center justify-between">
                     <h1>{label.title}</h1>
                     <Link href={label.file} target="_blank" download>
                       <Download

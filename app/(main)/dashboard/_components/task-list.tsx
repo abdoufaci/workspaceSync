@@ -52,7 +52,7 @@ function TaskList({
             {...provided.droppableProps}
             className="space-y-5">
             {cards.map((card, idx) => (
-              <Sheet>
+              <Sheet key={idx}>
                 <SheetTrigger className="w-full">
                   <Card card={card} key={card.id} idx={idx} />
                 </SheetTrigger>

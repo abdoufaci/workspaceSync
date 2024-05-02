@@ -6,9 +6,10 @@ import Image from "next/image";
 import { ScrollArea } from "../ui/scroll-area";
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
-import { X } from "lucide-react";
+import { MessageCircleMore, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import MemberStatus from "./member-status";
+import Link from "next/link";
 
 export const MemberDetail = () => {
   const { isSelectedMemberOpen, data, onCloseSelectedMember, onOpen } =
@@ -36,13 +37,20 @@ export const MemberDetail = () => {
       <Separator className="w-[90%] mx-auto " />
       <ScrollArea className="h-[92%]">
         <div className="flex flex-col items-center justify-center space-y-3 py-4">
-          <Image
-            alt="logo"
-            src={user?.imageUrl || "/avatar.png"}
-            height={200}
-            width={200}
-            className="h-40 w-40 rounded-full object-cover"
-          />
+          <div className="relative">
+            <Image
+              alt="logo"
+              src={user?.imageUrl || "/avatar.png"}
+              height={200}
+              width={200}
+              className="h-40 w-40 rounded-full object-cover"
+            />
+            <Link href={`/messages/${user?.id}`}>
+              <div className="bg-secondary-1 rounded-full p-3 w-fit absolute top-0 right-0">
+                <MessageCircleMore className="h-6 w-6 text-white" />
+              </div>
+            </Link>
+          </div>
           <div className="space-y-1">
             <h1 className="font-semibold text-center">{user?.username} </h1>
             <h1 className="text-[#757575] text-sm text-center">

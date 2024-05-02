@@ -17,7 +17,7 @@ function Banner() {
               alt="cursor"
               className="absolute -bottom-4 right-3"
             />
-            <div className="w-full h-full absolute top-0 left-0 rounded-md block"></div>
+            <div className="w-full h-full absolute top-0 left-0 rounded-md manage-block"></div>
           </div>
           <h1>your team</h1>
         </div>
@@ -27,7 +27,9 @@ function Banner() {
         intuitive platform combines powerful project management tools
       </p>
       <div className="flex items-center justify-center mt-7">
-        <Button className="rounded-md text-xl font-light bg-gradient-to-r from-[#2684FF] via-[#41BDF2] to-[#299EB8] text-white w-48 h-11 shadow-lg">
+        <Button
+          className="rounded-md text-xl font-light bg-gradient-to-r from-[#2684FF]/90 via-[#41BDF2]/90 to-[#299EB8]/90 
+        hover:from-[#2684FF] hover:via-[#41BDF2] hover:to-[#299EB8] text-white w-48 h-11 shadow-lg">
           <SignUpButton>Get Started</SignUpButton>
         </Button>
       </div>

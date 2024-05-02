@@ -24,7 +24,7 @@ export const AddTask = () => {
             Add Task
           </DialogTitle>
         </DialogHeader>
-        <ScrollArea className="h-[600px]">
+        <ScrollArea className="h-[70vh]">
           <AddTaskForm />
         </ScrollArea>
       </DialogContent>
