@@ -22,7 +22,7 @@ export const getMembersByUsername = async ({
         imageUrl: true,
         firstName: true,
         lastName: true,
-        username: true,
+        username: false,
         employeeRole: true
       },
     })
