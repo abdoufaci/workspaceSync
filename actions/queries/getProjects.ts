@@ -24,11 +24,18 @@ export const getProjects = async () => {
           })
         : await db.project.findMany({
             where: {
-              assignedTo: {
-                some: {
-                  id: currentUser?.id,
-                },
-              },
+              OR: [
+                {
+                  clientId: currentUser?.id
+                },{
+
+                  assignedTo: {
+                    some: {
+                      id: currentUser?.id,
+                    },
+                  },
+                }
+                ]
             },
             include: {
               assignedTo: {
