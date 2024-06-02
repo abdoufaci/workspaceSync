@@ -32,7 +32,7 @@ export default function RootLayout({
       <html lang="en">
         <body className={inter.className}>
           <QClientProvider>
-            <main className="h-full w-full">
+            <main className="h-full w-full c">
               <NextSSRPlugin
                 routerConfig={extractRouterConfig(ourFileRouter)}
               />

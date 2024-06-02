@@ -1,5 +1,6 @@
 "use server";
 
+import { getCurrentUser } from "@/actions/queries/getCurrentUser";
 import { AddTaskFormSchema } from "@/components/forms/add-task-form";
 import { db } from "@/lib/db";
 import { revalidatePath } from "next/cache";
@@ -17,6 +18,16 @@ export const editTask = async (
   }: z.infer<typeof AddTaskFormSchema>,
   id: string
 ) => {
+  const currentUser = await getCurrentUser();
+
+  if (!currentUser) {
+    throw new Error("currentUser not found [Add_Task]");
+  }
+
+  if (currentUser.role != "MANAGER") {
+    throw new Error("Unauthorized");
+  }
+
   if (!id) {
     throw new Error("List ID not found [Add_Task]");
   }

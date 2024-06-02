@@ -34,7 +34,11 @@ import { toast } from "sonner";
 import { editTask } from "@/actions/mutations/dashboard-actions/editTask";
 
 export const EditTaskFormSchema = z.object({
-  image: z.string().optional(),
+  image: z
+    .string()
+    .nullable()
+    .transform((value) => value ?? String(NaN))
+    .optional(),
   title: z.string(),
   description: z.string(),
   assignTo: z
@@ -341,7 +345,11 @@ export function EditTaskForm() {
               <FormLabel className="text-gray-sub-300">Task Image</FormLabel>
               <FormControl>
                 <div>
-                  <FileUpload value={field.value} onChange={field.onChange} />
+                  <FileUpload
+                    endpoint="imageUploader"
+                    value={field.value}
+                    onChange={field.onChange}
+                  />
                 </div>
               </FormControl>
               <FormMessage />

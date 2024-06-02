@@ -3,11 +3,9 @@
 import { cn } from "@/lib/utils";
 import AddTaskButton from "./add-task-button";
 import { Separator } from "@/components/ui/separator";
-import { getCards } from "@/actions/queries/getCards";
 import Card from "./card";
 import { Card as ListCard, User } from "@prisma/client";
-import { AnimatedTooltip } from "@/components/ui/animated-tooltip";
-import { Draggable, Droppable } from "@hello-pangea/dnd";
+import { Droppable } from "@hello-pangea/dnd";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import TaskDetail from "./task-detail";
 
@@ -24,6 +22,7 @@ interface TaskListProps {
     };
   })[];
   idx: number;
+  currentUser: User | null;
 }
 
 function TaskList({
@@ -31,7 +30,7 @@ function TaskList({
   className,
   type,
   cards: allCards,
-  idx,
+  currentUser,
 }: TaskListProps) {
   const cards = allCards.filter((card) => card.listId === type);
 
@@ -42,7 +41,7 @@ function TaskList({
           <div className={cn("", className)}></div>
           <h1>{title}</h1>
         </div>
-        <AddTaskButton taskType={type} />
+        {currentUser?.role === "MANAGER" && <AddTaskButton taskType={type} />}
       </div>
       <Separator />
       <Droppable droppableId={type} type="card">
@@ -57,7 +56,7 @@ function TaskList({
                   <Card card={card} key={card.id} idx={idx} />
                 </SheetTrigger>
                 <SheetContent>
-                  <TaskDetail card={card} />
+                  <TaskDetail card={card} currentUser={currentUser} />
                 </SheetContent>
               </Sheet>
             ))}

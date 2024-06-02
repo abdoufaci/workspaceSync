@@ -1,4 +1,5 @@
 import { getCurrentUser } from "@/actions/queries/getCurrentUser";
+import { getProjects } from "@/actions/queries/getProjects";
 import SideBar from "@/components/side-bar";
 import Topbar from "@/components/top-bar";
 import { ModalProvider } from "@/providers/modal-provider";
@@ -17,11 +18,12 @@ export const metadata: Metadata = {
 
 const MainLayout = async ({ children }: { children: React.ReactNode }) => {
   const currentUser = await getCurrentUser();
+  const projects = await getProjects();
 
   return (
-    <main className="h-full w-full flex">
+    <main className="h-full w-full flex c">
       <ModalProvider />
-      <SideBar role={currentUser?.role} />
+      <SideBar role={currentUser?.role} projects={projects} />
       <div className="w-full h-full">
         <Topbar />
         {children}

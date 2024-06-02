@@ -21,7 +21,7 @@ export const InviteModal = () => {
       <DialogContent className="bg-white text-black">
         <DialogHeader className="px-6 py-2">
           <DialogTitle className="text-xl text-center font-bold">
-            {`Invite ${role === "CLIENT" ? "Client" : "Employee"}`}
+            Invite {role === "CLIENT" ? "Client" : "Employee"}
           </DialogTitle>
         </DialogHeader>
         <InviteForm role={role} />

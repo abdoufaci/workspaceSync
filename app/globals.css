@@ -87,3 +87,26 @@ dialog:modal {
 .manage-block {
   background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' stroke='%231E78FFFF' stroke-width='2' stroke-dasharray='10' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
 }
+
+.nav-button-background {
+  background-color:hsla(214,100%,57%,0.31);
+background-image:
+radial-gradient(at 100% 43%, hsla(36,0%,100%,1) 0px, transparent 50%),
+radial-gradient(at 100% 57%, hsla(23,0%,100%,1) 0px, transparent 50%),
+radial-gradient(at 0% 47%, hsla(355,0%,100%,1) 0px, transparent 50%),
+radial-gradient(at 82% 14%, hsla(214,100%,57%,0.3) 0px, transparent 50%),
+radial-gradient(at 56% 64%, hsla(214,100%,57%,0.3) 0px, transparent 50%),
+radial-gradient(at 63% 48%, hsla(214,100%,57%,0.3) 0px, transparent 50%),
+radial-gradient(at 53% 100%, hsla(214,100%,57%,0.3) 0px, transparent 50%),
+radial-gradient(at 100% 0%, hsla(214,100%,57%,0.3) 0px, transparent 50%),
+radial-gradient(at 52% 95%, hsla(214,100%,57%,0.3) 0px, transparent 50%),
+radial-gradient(at 80% 48%, hsla(214,100%,57%,0.3) 0px, transparent 50%),
+radial-gradient(at 51% 0%, hsla(216,100%,56%,1) 0px, transparent 50%),
+radial-gradient(at 0% 100%, hsla(300,82%,53%,1) 0px, transparent 50%),
+radial-gradient(at 100% 100%, hsla(7,0%,100%,1) 0px, transparent 50%),
+radial-gradient(at 0% 18%, hsla(13,0%,100%,1) 0px, transparent 50%);
+}
+
+.c {
+  align-items: start;
+}

@@ -11,13 +11,30 @@ import { Check, ChevronDown } from "lucide-react";
 import { Popover, PopoverClose, PopoverTrigger } from "./ui/popover";
 import { PopoverContent } from "@radix-ui/react-popover";
 import { Button } from "./ui/button";
-import { Role } from "@prisma/client";
+import { EmployeeRole, Project, Role, User } from "@prisma/client";
+import { ScrollArea } from "./ui/scroll-area";
 
 interface SideBarProps {
   role?: Role;
+  projects?: (Project & {
+    assignedTo: {
+      username: string | null;
+      employeeRole: EmployeeRole | null;
+      imageUrl: string | null;
+    }[];
+  } & {
+    steps: {
+      id: string;
+      title: string;
+      completed: boolean;
+      projectId: string;
+      createdAt: Date;
+      updatedAt: Date;
+    }[];
+  })[];
 }
 
-function SideBar({ role }: SideBarProps) {
+function SideBar({ role, projects }: SideBarProps) {
   const [openSideBar, setOpenSideBar] = useState(false);
   const [popoverIsOpen, setPopoverIsOpen] = useState(false);
 
@@ -53,7 +70,7 @@ function SideBar({ role }: SideBarProps) {
         setPopoverIsOpen(false);
       }}
       className={cn(
-        "border-r overflow-x-hidden flex flex-col items-center transition-all duration-300 ease-out",
+        "border-r overflow-x-hidden h-screen sticky top-0 flex flex-col items-center transition-all duration-300 ease-out",
         openSideBar ? "!w-80" : "w-[90px] "
       )}>
       <div
@@ -97,7 +114,7 @@ function SideBar({ role }: SideBarProps) {
                         "flex items-center py-3 text-secondary-1 w-fit px-3 transition-all duration-200 ease-out  ",
                         openSideBar ? "gap-x-3 px-10" : "justify-center",
                         pathname.includes(label)
-                          ? "bg-gradient-to-r from-[#4f5bd5] justify-center to-[#b224ef] rounded-full text-white  bg-blend-color-burn"
+                          ? "nav-button-background rounded-full text-white  bg-blend-color-burn"
                           : "",
                         popoverIsOpen && "mb-20"
                       )}>
@@ -166,7 +183,7 @@ function SideBar({ role }: SideBarProps) {
                   "flex items-center py-3 text-secondary-1 w-fit px-3 transition-all duration-200 ease-out",
                   openSideBar ? "gap-x-3 px-10" : "justify-center",
                   pathname.includes(label)
-                    ? "bg-gradient-to-r from-[#4f5bd5] justify-center to-[#b224ef] rounded-full text-white  bg-blend-color-burn"
+                    ? "nav-button-background rounded-full text-white  bg-blend-color-burn"
                     : ""
                 )}>
                 {Icon}
@@ -186,6 +203,50 @@ function SideBar({ role }: SideBarProps) {
         ))}
       </div>
       <Separator />
+      <h1
+        className={cn(
+          "text-[#5A5A5A] text-left w-full p-5",
+          !openSideBar && "hidden"
+        )}>
+        my projects
+      </h1>
+      <ScrollArea className="h-[90%] my-2 w-full">
+        <div
+          className={cn(
+            "space-y-5 px-3 flex flex-col transition-all duration-100 ease-out ",
+            openSideBar ? "items-start" : "items-center"
+          )}>
+          {projects &&
+            projects.map((project) => (
+              <Link
+                href={`/my-projects/${project.id}`}
+                className={cn(
+                  "flex items-center  gap-x-3 hover:bg-gray-sub-100 w-full rounded-md p-2",
+                  openSideBar ? "" : "",
+                  pathname.includes(project.id) ? "bg-gray-sub-100" : ""
+                )}>
+                <Image
+                  src={project.imageUrl || "/logo.svg"}
+                  alt="wallpaper"
+                  height={100}
+                  width={100}
+                  className="rounded object-cover shadow-md h-10 w-10"
+                />
+                <h1
+                  className={cn(
+                    "whitespace-nowrap",
+                    !openSideBar
+                      ? "text-[0px]"
+                      : pathname.includes(project.id)
+                      ? "text-black font-medium text-base"
+                      : "text-[#5A5A5A] text-base"
+                  )}>
+                  {project.title}
+                </h1>
+              </Link>
+            ))}
+        </div>
+      </ScrollArea>
     </div>
   );
 }

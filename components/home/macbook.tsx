@@ -12,13 +12,14 @@ export function Macbook() {
           <Link href="https://peerlist.io/manuarora">
             <Image
               alt="logo"
-              src="https://utfs.io/f/d6bf20a8-ca06-4275-98d6-59f8e786c5ca-dn9lmg.jpg"
+              src="/logo.svg"
+              className="opacity-80"
               height={50}
               width={50}
             />
           </Link>
         }
-        src={`/macbook.svg`}
+        src={`https://utfs.io/f/d6bf20a8-ca06-4275-98d6-59f8e786c5ca-dn9lmg.jpg`}
         showGradient={false}
       />
     </div>

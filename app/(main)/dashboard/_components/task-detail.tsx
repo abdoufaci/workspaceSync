@@ -22,9 +22,10 @@ interface TaskDetailProps {
       username: string | null;
     };
   };
+  currentUser: User | null;
 }
 
-function TaskDetail({ card }: TaskDetailProps) {
+function TaskDetail({ card, currentUser }: TaskDetailProps) {
   const { onOpen } = useModal();
 
   const bgColors = {
@@ -39,12 +40,14 @@ function TaskDetail({ card }: TaskDetailProps) {
 
   return (
     <div className="relative h-screen">
-      <div className="mb-5">
-        <PenLine
-          onClick={() => onOpen("editTask", { task: card })}
-          className="h-4 w-4 text-secondary-1 cursor-pointer"
-        />
-      </div>
+      {currentUser?.role === "MANAGER" && (
+        <div className="mb-5">
+          <PenLine
+            onClick={() => onOpen("editTask", { task: card })}
+            className="h-4 w-4 text-secondary-1 cursor-pointer"
+          />
+        </div>
+      )}
       <ScrollArea className="h-[90vh]">
         <div className="space-y-3">
           <div className="flex flex-wrap gap-3">

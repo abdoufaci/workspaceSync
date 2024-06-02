@@ -42,7 +42,7 @@ export default async function Page({
   return (
     <div className="flex justify-around h-[calc(100vh-81px)] w-full p-6 py-4 bg-gray-sub-100">
       <div className="flex flex-col gap-y-4 px-2 py-4 bg-white rounded-xl w-[42%]">
-        <EditProjectBtn project={project} />
+        {currentUser?.role != "CLIENT" && <EditProjectBtn project={project} />}
         <ScrollArea className="flex-1">
           <div className="flex flex-col gap-y-4 px-6">
             <div className="flex items-center gap-x-2 justify-between">
@@ -66,8 +66,7 @@ export default async function Page({
               <Badge
                 variant={
                   project.stat === "inProgress" ? "pending" : project.stat
-                }
-              >
+                }>
                 {project.stat}
               </Badge>
             </div>

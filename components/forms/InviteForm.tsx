@@ -50,7 +50,6 @@ export function InviteForm({ role }: InviteFormProps) {
         role,
       }),
     onSuccess(data) {
-      console.log({ data });
       toast.success("user invited successfully");
     },
     onError() {

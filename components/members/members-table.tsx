@@ -36,7 +36,6 @@ function MembersTable({ isClient, allowlistIdentifiers }: MembersTableProps) {
     hasNextPage,
     isFetchingNextPage,
     isLoading,
-    isLoadingError,
   } = useMembersQuery(isClient);
 
   const searchParams = useSearchParams();
@@ -54,6 +53,7 @@ function MembersTable({ isClient, allowlistIdentifiers }: MembersTableProps) {
   if (!isMounted) {
     return null;
   }
+
   return (
     <ScrollArea className="w-full h-[92%]">
       <Table>

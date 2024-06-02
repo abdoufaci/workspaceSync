@@ -28,6 +28,10 @@ export const AddTask = async (
     throw new Error("currentUser not found [Add_Task]");
   }
 
+  if (currentUser.role != "MANAGER") {
+    throw new Error("Unauthorized");
+  }
+
   const converted = {
     description,
     links,

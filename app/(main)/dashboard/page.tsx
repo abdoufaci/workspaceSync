@@ -23,6 +23,7 @@ async function Page() {
     <ListContainer
       //@ts-ignore
       lists={regroupedCards({ cards })}
+      currentUser={currentUser}
     />
   );
 }
