@@ -37,7 +37,7 @@ export const EditTaskFormSchema = z.object({
   image: z
     .string()
     .nullable()
-    .transform((value) => value ?? String(NaN))
+    .transform((value) => value ?? null)
     .optional(),
   title: z.string(),
   description: z.string(),
@@ -92,6 +92,7 @@ export function EditTaskForm() {
 
   const { mutate, isPending } = useMutation({
     mutationFn: (data: z.infer<typeof EditTaskFormSchema>) =>
+      //@ts-ignore
       editTask(data, task?.id || ""),
     onSuccess() {
       toast.success("task updated !");

@@ -107,10 +107,6 @@ function ListContainer({ lists, currentUser }: ListContainerProps) {
 
         sourceList.cards = reorderedCard;
 
-        console.log({
-          reorderedCard,
-        });
-
         updateCardsMutation({ cards: reorderedCard });
 
         setOrderedData(newOrderedData);

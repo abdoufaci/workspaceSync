@@ -35,7 +35,7 @@ interface ProfileInfosFormProps {
 
 const formSchema = z.object({
   adress: z.string().min(2, {
-    message: "firstName must be at least 2 characters.",
+    message: "adress must be at least 2 characters.",
   }),
   role: z.enum([
     EmployeeRole.DEVELOPER,

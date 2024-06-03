@@ -21,7 +21,7 @@ const MainLayout = async ({ children }: { children: React.ReactNode }) => {
   const projects = await getProjects();
 
   return (
-    <main className="h-full w-full flex c">
+    <main className="h-full w-full flex items-start">
       <ModalProvider />
       <SideBar role={currentUser?.role} projects={projects} />
       <div className="w-full h-full">

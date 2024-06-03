@@ -205,7 +205,7 @@ function SideBar({ role, projects }: SideBarProps) {
       <Separator />
       <h1
         className={cn(
-          "text-[#5A5A5A] text-left w-full p-5",
+          "text-[#5A5A5A] text-left w-full pt-5 px-5 font-bold",
           !openSideBar && "hidden"
         )}>
         my projects
@@ -213,7 +213,7 @@ function SideBar({ role, projects }: SideBarProps) {
       <ScrollArea className="h-[90%] my-2 w-full">
         <div
           className={cn(
-            "space-y-5 px-3 flex flex-col transition-all duration-100 ease-out ",
+            "space-y-3 px-3 flex flex-col transition-all duration-100 ease-out ",
             openSideBar ? "items-start" : "items-center"
           )}>
           {projects &&
