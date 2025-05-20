@@ -172,8 +172,7 @@ export function ProjectForm(
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-8 flex flex-col justify-center items-center"
-      >
+        className="space-y-8 flex flex-col justify-center items-center">
         <FormField
           control={form.control}
           name="image"
@@ -182,7 +181,11 @@ export function ProjectForm(
               <FormLabel className="text-gray-sub-300">Project Image</FormLabel>
               <FormControl>
                 <div>
-                  <FileUpload value={field.value} onChange={field.onChange} />
+                  <FileUpload
+                    endpoint="imageUploader"
+                    value={field.value}
+                    onChange={field.onChange}
+                  />
                 </div>
               </FormControl>
               <FormMessage />
@@ -227,8 +230,7 @@ export function ProjectForm(
                 {field.value.map((employee: any) => (
                   <div
                     key={employee.id}
-                    className="flex items-center gap-x-2 p-1 rounded-full bg-gray-200 w-fit"
-                  >
+                    className="flex items-center gap-x-2 p-1 rounded-full bg-gray-200 w-fit">
                     <Image
                       alt="avatar"
                       src={employee.imageUrl || "/avatar.png"}
@@ -410,8 +412,7 @@ export function ProjectForm(
                   <div
                     className={`flex items-center rounded-full border ${
                       field.value === "notStarted" && "border-[#00000088]"
-                    }`}
-                  >
+                    }`}>
                     <RadioGroupItem
                       value="notStarted"
                       id="r1"
@@ -426,8 +427,7 @@ export function ProjectForm(
                   <div
                     className={`flex items-center rounded-full border ${
                       field.value === "inProgress" && "border-[#00000088]"
-                    }`}
-                  >
+                    }`}>
                     <RadioGroupItem
                       value="inProgress"
                       id="r2"
@@ -442,8 +442,7 @@ export function ProjectForm(
                   <div
                     className={`flex items-center rounded-full border ${
                       field.value === "completed" && "border-[#00000088]"
-                    }`}
-                  >
+                    }`}>
                     <RadioGroupItem
                       value="completed"
                       id="r3"
@@ -472,8 +471,7 @@ export function ProjectForm(
                   <div className="flex p-2 border rounded-lg w-[160px] items-center justify-between">
                     <label
                       htmlFor={step.title}
-                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                    >
+                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
                       {step.title}
                     </label>
                     <Checkbox
@@ -510,8 +508,7 @@ export function ProjectForm(
                   placeholder="Step Name"
                   value={value}
                   onChange={(e) => setValue(e.target.value)}
-                  className="w-[160px]"
-                ></Input>
+                  className="w-[160px]"></Input>
                 <CircleFadingPlus
                   role="button"
                   type="submit"
@@ -569,8 +566,7 @@ export function ProjectForm(
           disabled={isPending || stepsPending}
           type="submit"
           variant={"blue"}
-          className="text-white w-full py-6 rounded-lg"
-        >
+          className="text-white w-full py-6 rounded-lg">
           {defaultValues ? "Edit Project" : "Add Project"}
         </Button>
       </form>

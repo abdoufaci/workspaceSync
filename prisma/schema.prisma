@@ -153,17 +153,19 @@ enum Priority {
 model Card {
   id String @id @default(uuid())
 
-  title       String
-  TitleStates Json
-  startDate   DateTime
-  endDate     DateTime
-  description String
-  links       Json?
-  imageUrl    String?
-  priority    Priority
-  order       Int
-  listId      String
-  labels      Json?
+  title         String
+  TitleStates   Json
+  startDate     DateTime
+  endDate       DateTime
+  description   String
+  links         Json?
+  imageUrl      String?
+  priority      Priority
+  order         Int
+  listId        String
+  labels        Json?
+  estimatedTime String   @default("-")
+  advices       String[]
 
   assignedTo User[]
 

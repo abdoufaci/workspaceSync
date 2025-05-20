@@ -5,6 +5,7 @@ import { AddTaskFormSchema } from "@/components/forms/add-task-form";
 import { db } from "@/lib/db";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
+import { addAiGenerated } from "./add-ai-generated";
 
 export const AddTask = async (
   {
@@ -59,17 +60,20 @@ export const AddTask = async (
 
   const newOrder = lastCard ? lastCard.order + 1 : 1;
 
+  const { advices, time } = await addAiGenerated(title + " " + description);
+
   const newTask = await db.card.create({
     //@ts-ignore
     data: {
       assignedTo: {
         connect: assignTo.map((employee) => ({ id: employee.id })),
       },
-
       ...converted,
       listId: listId || "",
       order: newOrder,
       creatorId: currentUser?.id,
+      estimatedTime: time,
+      advices,
     },
   });
 

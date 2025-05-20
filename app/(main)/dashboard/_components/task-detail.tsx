@@ -9,9 +9,22 @@ import { useModal } from "@/hooks/use-modal-store";
 import { cn } from "@/lib/utils";
 import { titlesState } from "@/titles";
 import { Card, Prisma, User } from "@prisma/client";
-import { Calendar, Download, Paperclip, PenLine, Plus } from "lucide-react";
+import {
+  Calendar,
+  Clock,
+  Download,
+  Paperclip,
+  PenLine,
+  Plus,
+} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 interface TaskDetailProps {
   card: Card & {
@@ -127,7 +140,10 @@ function TaskDetail({ card, currentUser }: TaskDetailProps) {
               </h1>
             </div>
           </div>
-
+          <div className="flex items-center gap-3">
+            <h1 className="text-gray-sub-300 text-sm">Estimated time :</h1>
+            <h1 className="text-xs">{card.estimatedTime}</h1>
+          </div>
           {card.links && (
             <div className="flex items-start gap-3">
               <h1 className="text-gray-sub-300 text-sm">Links</h1>
@@ -203,6 +219,16 @@ function TaskDetail({ card, currentUser }: TaskDetailProps) {
                 ))}
             </div>
           </div>
+          {!!card.advices.length && (
+            <Accordion type="single" collapsible className="w-full">
+              {card.advices.map((advice, idx) => (
+                <AccordionItem value={`item-${idx}`} key={idx}>
+                  <AccordionTrigger>Advice {idx + 1}</AccordionTrigger>
+                  <AccordionContent>{advice}</AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+          )}
         </div>
       </ScrollArea>
     </div>
